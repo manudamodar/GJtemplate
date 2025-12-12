@@ -1,0 +1,3049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Annual Returns Tracker - Guru & Jana Chartered Accountants</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: auto;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            
+            /* backdrop-filter: blur(10px); */
+            overflow-x: hidden;
+            overflow-y: visible;
+            
+        }
+
+        .header {
+            background: #1A8FB8;
+            color: white;
+            padding: 20px 30px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            /* --- Centering changes --- */
+            justify-content: center; /* Horizontally center the flex items */
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            /* animation: shimmer 3s ease-in-out infinite; */
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        /* .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        } */
+
+        .header-text {
+            position: relative;
+            z-index: 2;
+            /* Add this to center the text content inside the header-text div */
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* .firm-name-edit {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .firm-name-edit::placeholder {
+            color: rgba(255,255,255,0.7);
+        } */
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-tab.active {
+            color: #1A8FB8;
+            background: white;
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #1A8FB8;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filters-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 12px;
+        }
+
+        .filter-group select, .filter-group input {
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: #1A8FB8;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: #1A8FB8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-success {
+            background: #56ab2f;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    font-size: 11px;
+}
+
+/* STICKY HEADER */
+.data-table thead th {
+    position: sticky;
+    top: 0;
+    background: #1A8FB8;
+    color: white;
+    z-index: 5;
+    padding: 8px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+/* Header rounding */
+.data-table thead th:first-child {
+    border-top-left-radius: 10px;
+}
+.data-table thead th:last-child {
+    border-top-right-radius: 10px;
+}
+        
+/* Row hover */
+.data-table tr:hover {
+    background: #f8f9fa;
+}
+
+/* Better spacing for table */
+.data-table th,
+.data-table td {
+    padding: 3px 5px;  
+    vertical-align: middle;
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.editable-cell {
+    cursor: pointer;
+    position: relative;
+    /* This padding is added to ensure static content aligns with the input padding below */
+    padding: 3px 5px; 
+    min-height: 25px; 
+}
+
+        .editable-cell:hover {
+            background: #e3f2fd;
+        }
+
+        .editable-input {
+            width: auto;
+            height: 100%; /* Ensure input stretches to full cell height */
+            border: none;
+            background: #fff3cd;
+            /* ADD the desired PADDING directly to the input element */
+            padding: 3px 5px; 
+            font-size: 10px;
+            box-sizing: border-box; /* IMPORTANT: Ensures padding doesn't increase element size */
+        }
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+            /* padding: 2px 6px; */
+            /* border-radius: 3px; */
+            font-size: 10px;
+            display: inline-block; /* Allows span to contain padding/background */
+            padding: 2px 6px; /* Re-added padding for the status badge look */
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .status-filed {
+            background: #d4edda;
+            color: #155724;
+            /* padding: 2px 6px; */
+            /* border-radius: 3px; */
+            font-size: 10px;
+            font-weight: 600;
+            display: inline-block; /* Allows span to contain padding/background */
+            padding: 2px 6px; /* Re-added padding for the status badge look */
+            border-radius: 3px;
+        }
+
+        .status-progress {
+            background: #cce5ff;
+            color: #0056b3;
+            /* padding: 2px 6px;
+            border-radius: 3px; */
+            font-size: 10px;
+            font-weight: 600;
+            display: inline-block; /* Allows span to contain padding/background */
+            padding: 2px 6px; /* Re-added padding for the status badge look */
+            border-radius: 3px;
+        }
+        .data-table td:not(.editable-cell) {
+    padding: 3px 5px; 
+}
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border-left: 5px solid #1A8FB8;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-number {
+            font-size: 1em;
+            font-weight: bold;
+            color: #1A8FB8;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .table-container {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 10px;
+    background: white;
+    position: relative;
+}
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .close:hover {
+            color: #495057;
+        }
+
+        .senior-member-reports {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .report-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .report-section h4 {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .edit-btn, .delete-btn, .save-btn {
+            padding: 3px 6px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            margin: 0 1px;
+        }
+
+        .edit-btn {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .save-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .export-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .filters-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .senior-member-reports {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .sync-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 1001;
+            display: none;
+        }
+
+        .sync-status.saving {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .sync-status.error {
+            background: #dc3545;
+        }
+        .action-buttons {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-action {
+    padding:20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    color: white;
+}
+
+.import-btn {
+    background-color: #1A8FB8;
+}
+
+.import-btn:hover {
+    background-color: #1A8FB8;
+}
+
+.clear-btn {
+    background-color: #dc3545;
+}
+
+.clear-btn:hover {
+    background-color: #bb2d3b;
+}
+
+    </style>
+</head>
+<body>
+    <div class="sync-status" id="syncStatus">Synchronized</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <!-- <div class="logo">
+                    <svg width="80" height="60" viewBox="0 0 200 150"> -->
+                        <!-- GURU text in teal -->
+                        <!-- <text x="10" y="50" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#5f9ea0">GURU</text> -->
+                        <!-- JANA text in grey -->
+                        <!-- <text x="10" y="90" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#888888">&JANA</text> -->
+                        <!-- CHARTERED ACCOUNTANTS text -->
+                        <!-- <text x="10" y="115" font-family="Arial, sans-serif" font-size="12" fill="#888888">CHARTERED ACCOUNTANTS</text> -->
+                        <!-- Registered symbol -->
+                        <!-- <circle cx="180" cy="80" r="8" fill="none" stroke="#888888" stroke-width="1"/> -->
+                        <!-- <text x="177" y="84" font-family="Arial, sans-serif" font-size="8" fill="#888888">R</text> -->
+                    <!-- </svg> -->
+                <!-- </div> -->
+                <div class="header-text">
+                        <h1 id="firmNameDisplay">GST Annual Returns Management System</h1>
+                    <!-- <input type="text" class="firm-name-edit" id="firmNameEdit" placeholder="Edit firm name" style="display: none;"> -->
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('dashboard')">Dashboard</button>
+            <button class="nav-tab" onclick="showTab('tracker')">Tracker</button>
+            <button class="nav-tab" onclick="showTab('reports')">Reports</button>
+            <button class="nav-tab" onclick="showTab('settings')">Settings</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card" onclick="filterAndShowClients('all')">
+                    <div class="stat-number" id="totalClients">0</div>
+                    <div class="stat-label">Total Clients</div>
+                </div>
+                <div class="stat-card" onclick="filterAndShowClients('gstr9-pending')">
+                    <div class="stat-number" id="gstr9Pending">0</div>
+                    <div class="stat-label">GSTR-9 Pending</div>
+                </div>
+                <div class="stat-card" onclick="filterAndShowClients('gstr9-filed')">
+                    <div class="stat-number" id="gstr9Filed">0</div>
+                    <div class="stat-label">GSTR-9 Filed</div>
+                </div>
+                <div class="stat-card" onclick="filterAndShowClients('gstr9c-pending')">
+                    <div class="stat-number" id="gstr9cPending">0</div>
+                    <div class="stat-label">GSTR-9C Pending</div>
+                </div>
+                <div class="stat-card" onclick="filterAndShowClients('gstr9c-filed')">
+                    <div class="stat-number" id="gstr9cFiled">0</div>
+                    <div class="stat-label">GSTR-9C Filed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalTurnover">₹0</div>
+                    <div class="stat-label">Total Turnover</div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <input type="file" id="trackerFileInput" accept=".xlsx, .xls" style="display: none;">
+                
+                <button class="btn-action import-btn" onclick="document.getElementById('trackerFileInput').click()">Import Excel</button>
+                
+                <button class="btn btn-warning" onclick="clearAllData()">Clear All Data</button>
+            </div>
+            <div class="senior-member-reports">
+                <div class="report-section">
+                    <h4>Senior-wise Status Summary</h4>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table" id="seniorDashboardTable">
+                            <thead>
+                                <tr>
+                                    <th>Senior</th>
+                                    <th>Total</th>
+                                    <th>GSTR-9 Filed</th>
+                                    <th>GSTR-9 Pending</th>
+                                    <th>GSTR-9C Filed</th>
+                                    <th>GSTR-9C Pending</th>
+                                    <th>Completion %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="seniorDashboardBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="report-section">
+                    <h4>Member-wise Status Summary</h4>
+                    <div style="overflow-x: auto;" >
+                        <table class="data-table" id="memberDashboardTable">
+                            <thead>
+                                <tr>
+                                    <th>Member</th>
+                                    <th>Senior</th>
+                                    <th>Total</th>
+                                    <th>GSTR-9 Filed</th>
+                                    <th>GSTR-9 Pending</th>
+                                    <th>GSTR-9C Filed</th>
+                                    <th>GSTR-9C Pending</th>
+                                    <th>Completion %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="memberDashboardBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tracker Tab -->
+        <div id="tracker" class="tab-content">
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label>Search Client</label>
+                    <input type="text" id="searchInput" placeholder="Search clients..." onkeyup="applyFilters()">
+                </div>
+                <div class="filter-group">
+                    <label>Senior</label>
+                    <select id="seniorFilter" onchange="applyFilters()">
+                        <option value="">All Seniors</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Member</label>
+                    <select id="memberFilter" onchange="applyFilters()">
+                        <option value="">All Members</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>GSTR-9 Status</label>
+                    <select id="gstr9StatusFilter" onchange="applyFilters()">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Filed">Filed</option>
+                        <option value="Not Applicable">Not Applicable</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>GSTR-9C Status</label>
+                    <select id="gstr9cStatusFilter" onchange="applyFilters()">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Filed">Filed</option>
+                        <option value="Not Applicable">Not Applicable</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Actions</label>
+                    <div style="display: flex; gap: 5px;">
+                        <button class="btn btn-secondary" onclick="clearFilters()">Clear</button>
+                        <button class="btn btn-success" onclick="exportFilteredData()">Export</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="showAddClientModal()">+ Add Client</button>
+                <button class="btn btn-secondary" onclick="showColumnManager()">Manage Columns</button>
+                <button class="btn btn-success" onclick="exportData()">Export All</button>
+                <!-- <button class="btn btn-warning" onclick="saveAllChanges()">Save All Changes</button> -->
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="clientsTable">
+                    <thead>
+                        <tr>
+                            <th>Sr</th>
+                            <th>Client Name</th>
+                            <th>GSTIN</th>
+                            <th>Type</th>
+                            <th>Senior</th>
+                            <th>Multi</th>
+                            <th>Member</th>
+                            <th>Turnover</th>
+                            <th>Papilio ID</th>
+                            <th>GSTR-9 Status</th>
+                            <th>GSTR-9C Status</th>
+                            <th>Proposal</th>
+                            <th>Target Date</th>
+                            <th>GSTR-9 ARN</th>
+                            <th>GSTR-9 Date</th>
+                            <th>GSTR-9C ARN</th>
+                            <th>GSTR-9C Date</th>
+                            <th>Mail</th>
+                            <th>Papilio</th>
+                            <th>Remarks</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientsTableBody">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <h3 style="margin-bottom: 20px; color: #495057;">Generate Reports</h3>
+            
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label>Report Type</label>
+                    <select id="reportType">
+                        <option value="status">GSTR Status Report</option>
+                        <option value="senior">Senior-wise Report</option>
+                        <option value="member">Member-wise Report</option>
+                        <option value="turnover">Turnover Analysis</option>
+                        <option value="pending">Pending Returns</option>
+                        <option value="filed">Filed Returns</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="reportSenior">Filter by Senior</label>
+                    <select id="reportSenior">
+                        <option value="all">All Seniors</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="reportMember">Filter by Member</label>
+                    <select id="reportMember">
+                        <option value="all">All Members</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Actions</label>
+                    <div style="display: flex; gap: 5px;">
+                        <button class="btn btn-primary" onclick="generateReport()">Generate</button>
+                        <button class="btn btn-success" onclick="exportReport()">Export Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reportOutput" style="margin-top: 30px;"></div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <h3 style="margin-bottom: 20px; color: #495057;">Application Settings</h3>
+            
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label>Firm Name</label>
+                    <input type="text" id="settingsFirmName" 
+                    value="GST Annual Returns Management System" 
+                    disabled>
+
+                </div>
+                <div class="filter-group">
+                    <label>Auto-save Interval (seconds)</label>
+                    <select id="autoSaveInterval">
+                        <option value="10">10 seconds</option>
+                        <option value="30" selected>30 seconds</option>
+                        <option value="60">1 minute</option>
+                        <option value="300">5 minutes</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Actions</label>
+                    <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+                </div>
+            </div>
+
+            <div class="report-section" style="margin-top: 30px;">
+                <h4>Master Data Management</h4>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                    
+                    <!-- Senior Names Management -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; height: 250px;">
+                        <h5>Senior Names</h5>
+                    
+                        <div id="seniorsList" style="margin: 10px 0; max-height: 150px; overflow-y: auto; flex: 1;">
+                            <!-- Senior names will be populated here -->
+                        </div>
+                    
+                        <div style="display: flex; gap: 5px; margin-top: auto;">
+                            <input type="text" id="newSeniorName" placeholder="Add new senior"
+                                   style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                            <button class="btn btn-primary" onclick="addSeniorName()">Add</button>
+                        </div>
+                    </div>
+                    
+
+                    <!-- Member Names Management -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; height: 250px;">
+                        <h5>Member Names</h5>
+                    
+                        <div id="membersList" style="margin: 10px 0; max-height: 150px; overflow-y: auto; flex: 1;">
+                            <!-- Member names will be populated here -->
+                        </div>
+                    
+                        <div style="display: flex; gap: 5px; margin-top: auto;">
+                            <input type="text" id="newMemberName" placeholder="Add new member"
+                                   style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                            <button class="btn btn-primary" onclick="addMemberName()">Add</button>
+                        </div>
+                    </div>
+                    
+
+                    <!-- Proposal Status Management -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <h5>Proposal Status Options</h5>
+                        <div id="proposalStatusList" style="margin: 10px 0; max-height: 150px; overflow-y: auto;">
+                            <!-- Proposal status options will be populated here -->
+                        </div>
+                        <!-- <div style="display: flex; gap: 5px;">
+                            <input type="text" id="newProposalStatus" placeholder="Add new status" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                            <button class="btn btn-primary" onclick="addProposalStatus()">Add</button>
+                        </div> -->
+                    </div>
+
+                    <!-- GSTR-9 Status Management -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <h5>GSTR-9 Status Options</h5>
+                        <div id="gstr9StatusList" style="margin: 10px 0; max-height: 150px; overflow-y: auto;">
+                            <!-- GSTR-9 status options will be populated here -->
+                        </div>
+                        <!-- <div style="display: flex; gap: 5px;">
+                            <input type="text" id="newGstr9Status" placeholder="Add new status" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                            <button class="btn btn-primary" onclick="addGstr9Status()">Add</button>
+                        </div> -->
+                    </div>
+
+                    <!-- GSTR-9C Status Management -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <h5>GSTR-9C Status Options</h5>
+                        <div id="gstr9cStatusList" style="margin: 10px 0; max-height: 150px; overflow-y: auto;">
+                            <!-- GSTR-9C status options will be populated here -->
+                        </div>
+                        <!-- <div style="display: flex; gap: 5px;">
+                            <input type="text" id="newGstr9cStatus" placeholder="Add new status" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                            <button class="btn btn-primary" onclick="addGstr9cStatus()">Add</button>
+                        </div> -->
+                    </div>
+
+                    <!-- Custom Columns Management -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <h5>Custom Columns</h5>
+                        <div id="customColumnsList" style="margin: 10px 0; max-height: 150px; overflow-y: auto;">
+                            <!-- Custom columns will be populated here -->
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="text" id="newColumnName" placeholder="Add new column" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                            <button class="btn btn-primary" onclick="addCustomColumn()">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <h4 style="margin-bottom: 15px;">Data Management</h4>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn btn-success" onclick="loadActualDataAgain()">🔄 Reload Data</button>
+                    <button class="btn btn-secondary" onclick="exportData()">📤 Backup Data</button>
+                    <button class="btn btn-warning" onclick="clearAllData()">🗑️ Clear All Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Column Manager Modal -->
+    <div id="columnManagerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeColumnManager()">&times;</span>
+            <h3>Manage Table Columns</h3>
+            <div style="margin: 20px 0;">
+                <p style="color: #6c757d; margin-bottom: 15px;">Select which columns to display in the tracker table:</p>
+                <div id="columnCheckboxes" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                    <!-- Column checkboxes will be populated here -->
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn btn-secondary" onclick="closeColumnManager()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveColumnSettings()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Client Modal -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Add New Client</h3>
+            <form id="clientForm" onsubmit="saveClient(event)">
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label>Client Name *</label>
+                        <input type="text" id="clientName" required>
+                    </div>
+                    <div class="filter-group">
+                        <label>GSTIN *</label>
+                        <input type="text" id="gstin" pattern="[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}" required>
+                    </div>
+                    <div class="filter-group">
+                        <label>Client Type</label>
+                        <select id="clientType">
+                            <option value="">Select Type</option>
+                            <option value="CAS">CAS</option>
+                            <option value="Non CAS">Non CAS</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Composition">Composition</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Senior</label>
+                        <select id="senior">
+                            <option value="">Select Senior</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Multi Registration</label>
+                        <select id="multiRegistration">
+                            <option value="No">Single</option>
+                            <option value="Yes">Multiple</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Member</label>
+                        <input type="text" id="member">
+                    </div>
+                    <div class="filter-group">
+                        <label>Turnover (₹)</label>
+                        <input type="number" id="turnover" min="0" step="0.01">
+                    </div>
+                    <div class="filter-group">
+                        <label>Papilio ID</label>
+                        <input type="text" id="papilioId">
+                    </div>
+                    <div class="filter-group">
+                        <label>GSTR-9 Status</label>
+                        <select id="gstr9Status">
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Filed">Filed</option>
+                            <option value="Not Applicable">Not Applicable</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>GSTR-9C Status</label>
+                        <select id="gstr9cStatus">
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Filed">Filed</option>
+                            <option value="Not Applicable">Not Applicable</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Target Date</label>
+                        <input type="date" id="targetDate">
+                    </div>
+                    <div class="filter-group">
+                        <label>Remarks</label>
+                        <input type="text" id="remarks">
+                    </div>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Client</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Application state
+        let clients = [];
+        let isDataDirty = false; // <-- NEW GLOBAL FLAG
+        let editingIndex = -1;
+        let currentFilters = {};
+        let autoSaveTimer;
+        let masterData = {
+            seniors: [],
+            members: [],
+            proposalStatuses: [],
+            gstr9Statuses: [],
+            gstr9cStatuses: [],
+            customColumns: []
+
+            
+
+        };
+        let visibleColumns = {
+            sr: true, clientName: true, gstin: true, clientType: true, senior: true, 
+            multiRegistration: true, member: true, turnover: true, papilioId: true,
+            gstr9Status: true, gstr9cStatus: true, proposalStatus: true, targetDate: true,
+            gstr9Arn: true, gstr9Date: true, gstr9cArn: true, gstr9cDate: true,
+            mailSent: true, papilioUpdate: true, remarks: true, actions: true
+        };
+
+        const ALL_CLIENT_HEADERS = [
+            "sr", "clientName", "gstin", "clientType", "senior",
+            "multiRegistration", "member", "turnover", "papilioId",
+            "gstr9Status", "gstr9cStatus", "proposalStatus",
+            "targetDate", "gstr9Arn", "gstr9Date", "gstr9cArn",
+            "gstr9cDate", "mailSent", "papilioUpdate", "remarks"
+            ];
+
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadMasterDataFromApi();
+            await loadClientsFromApi();
+            updateDashboard();
+            renderClientsTable();
+            populateFilters();
+            loadMasterDataLists();
+            initAutoSave();
+            setupInlineEditing();
+        });
+
+        // Auto-save periodically by pushing data to backend
+        // Auto-save periodically by pushing data to backend
+        function initAutoSave() {
+        const interval = parseInt(document.getElementById('autoSaveInterval').value) * 1000;
+        autoSaveTimer = setInterval(() => {
+        // console.log('⏰ AUTO-SAVE CHECK - isDataDirty:', isDataDirty);
+
+        // --- GUARD CONDITION ADDED ---
+        if (isDataDirty) { 
+            // console.log('🚀 AUTO-SAVE EXECUTING');
+            // console.log('🔥 SAVE DATA TRIGGERED - clients[0] keys:', Object.keys(clients[0] || {}));
+            saveData();
+            isDataDirty = false; // Reset flag after save attempt
+            showSyncStatus('Synchronized');
+        } else {
+            // Optional: Show status indicating no changes were sent
+            showSyncStatus('Awaiting changes'); 
+        }
+    }, interval);
+}
+        function showSyncStatus(message, type = 'success') {
+            const status = document.getElementById('syncStatus');
+            status.textContent = message;
+            status.className = 'sync-status';
+            if (type === 'saving') status.classList.add('saving');
+            if (type === 'error') status.classList.add('error');
+            status.style.display = 'block';
+            
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 2000);
+        }
+
+        // Tab management
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (tabName === 'dashboard') {
+                updateDashboard();
+            }
+        }
+
+        // Filter and navigation functions
+        function filterAndShowClients(filterType) {
+            showTab('tracker');
+            
+            // Update tab to active
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector('.nav-tab:nth-child(2)').classList.add('active');
+            
+            // Clear all filters first
+            clearFilters();
+            
+            // Apply specific filter
+            switch(filterType) {
+                case 'gstr9-pending':
+                    document.getElementById('gstr9StatusFilter').value = 'Pending';
+                    break;
+                case 'gstr9-filed':
+                    document.getElementById('gstr9StatusFilter').value = 'Filed';
+                    break;
+                case 'gstr9c-pending':
+                    document.getElementById('gstr9cStatusFilter').value = 'Pending';
+                    break;
+                case 'gstr9c-filed':
+                    document.getElementById('gstr9cStatusFilter').value = 'Filed';
+                    break;
+            }
+            
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const seniorFilter = document.getElementById('seniorFilter').value;
+            const memberFilter = document.getElementById('memberFilter').value;
+            const gstr9StatusFilter = document.getElementById('gstr9StatusFilter').value;
+            const gstr9cStatusFilter = document.getElementById('gstr9cStatusFilter').value;
+
+            const rows = document.querySelectorAll('#clientsTableBody tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length === 0) return;
+
+                const clientName = cells[1].textContent.toLowerCase();
+                const gstin = cells[2].textContent.toLowerCase();
+                const senior = cells[4].textContent;
+                const member = cells[6].textContent;
+                const gstr9Status = cells[9].textContent.trim();
+                const gstr9cStatus = cells[10].textContent.trim();
+
+                const matchesSearch = clientName.includes(searchTerm) || gstin.includes(searchTerm);
+                const matchesSenior = !seniorFilter || senior === seniorFilter;
+                const matchesMember = !memberFilter || member === memberFilter;
+                const matchesGstr9Status = !gstr9StatusFilter || gstr9Status === gstr9StatusFilter;
+                const matchesGstr9cStatus = !gstr9cStatusFilter || gstr9cStatus === gstr9cStatusFilter;
+
+                if (matchesSearch && matchesSenior && matchesMember && matchesGstr9Status && matchesGstr9cStatus) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Update filter status
+            showSyncStatus(`Showing ${visibleCount} records`, 'saving');
+        }
+                // Inline editing setup
+        function setupInlineEditing() {
+            // This will be called after table rendering
+        }
+
+        function makeEditable(cell, field, index) {
+            // Get the current visible content of the cell
+            const currentValue = cell.textContent.trim();
+            
+            // --- DROPDOWN FIELDS (Select elements) ---
+            if (field === 'gstr9Status' || field === 'gstr9cStatus' || field === 'proposalStatus' || field === 'senior' || field === 'member') {
+                
+                // If an editable element already exists, prevent re-creation
+                if (cell.querySelector('select')) return; 
+
+                const select = document.createElement('select');
+                select.className = 'editable-input';
+                
+                let optionsList = [];
+
+                // Determine which master list to use (Grouping the logic for conciseness)
+                if (field === 'gstr9Status') optionsList = masterData.gstr9Statuses;
+                else if (field === 'gstr9cStatus') optionsList = masterData.gstr9cStatuses;
+                else if (field === 'proposalStatus') optionsList = masterData.proposalStatuses;
+                else if (field === 'senior') {
+                    optionsList = masterData.seniors;
+                    const emptyOption = document.createElement('option');
+                    emptyOption.value = '';
+                    emptyOption.textContent = 'Select ' + field.charAt(0).toUpperCase() + field.slice(1);
+                    select.appendChild(emptyOption);
+                } else if (field === 'member') {
+                    optionsList = masterData.members;
+                    const emptyOption = document.createElement('option');
+                    emptyOption.value = '';
+                    emptyOption.textContent = 'Select Member';
+                    select.appendChild(emptyOption);
+                }
+
+                // Populate options
+                optionsList.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.textContent = option;
+                    // Select the option matching the current text content
+                    if (option === currentValue) {
+                        opt.selected = true;
+                    }
+                    select.appendChild(opt);
+                });
+                
+                // Finalize cell and focus
+                cell.innerHTML = '';
+                cell.appendChild(select);
+                
+                // A small delay is sometimes needed to ensure the browser registers the focus state
+                setTimeout(() => {
+                    select.focus();
+                }, 0);
+
+                
+                // Store the value that was originally selected/displayed. 
+                const initialValue = select.value || 'Pending';
+
+                // === START FIX: Use the flag to disable blur after explicit change ===
+                let changeHandled = false;
+
+                select.onchange = () => {
+                    changeHandled = true; // Mark that the change has been handled explicitly
+                    // Trigger save immediately when a new value is selected from the dropdown
+                    saveInlineEdit(cell, field, index, select.value);
+                };
+                
+                select.onblur = () => {
+                    if (changeHandled) {
+                        return;
+                    }
+
+                    const newValue = select.value;
+                    const valueChanged = newValue !== initialValue; 
+                    const isSavingPending = (newValue === 'Pending' && (field === 'gstr9Status' || field === 'gstr9cStatus' || field === 'proposalStatus'));
+                    
+                    if (valueChanged || isSavingPending) { 
+                        // FALLBACK SAVE: This code handles the case where the browser fires blur before change.
+                        saveInlineEdit(cell, field, index, newValue); 
+                    } else {
+                        // FIX 2: Revert/Redraw cell statically WITH the <span> wrapper and color class
+                        const displayValue = initialValue || '';
+                        
+                        // We rely on getStatusClass to decide the color
+                        cell.innerHTML = `<span class="status-${getStatusClass(displayValue)}">${displayValue}</span>`;
+                        // This applies the correct static color even when reverting to the old value.
+                    }
+                };
+            // --- DATE INPUTS (Fixed for stability) ---
+            } else if (field === 'targetDate' || field === 'gstr9Date' || field === 'gstr9cDate') {
+                
+                if (cell.querySelector('input')) return; // ADDED CHECK
+
+                const input = document.createElement('input');
+                input.type = 'date';
+                input.className = 'editable-input';
+                
+                // Use the actual stored value for the date input
+                input.value = clients[index][field] || ''; 
+                
+                cell.innerHTML = '';
+                cell.appendChild(input);
+                
+                setTimeout(() => {
+                    input.focus();
+                    // Optional: simulate click to open date picker right away
+                    input.click(); 
+                }, 0); 
+                
+                const initialValue = input.value;
+
+                input.onblur = () => {
+                    if (input.value !== initialValue) {
+                        saveInlineEdit(cell, field, index, input.value);
+                    } else {
+                        cell.textContent = formatDate(initialValue);
+                    }
+                };
+                // Removed the problematic input.onchange = () => { input.blur(); }; 
+
+            // --- GENERIC TEXT INPUTS (ALREADY STABLE) ---
+            } else {
+                
+                if (cell.querySelector('input')) return; // ADDED CHECK
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'editable-input';
+                input.value = currentValue;
+                
+                cell.innerHTML = '';
+                cell.appendChild(input);
+                input.focus();
+                
+                input.onblur = () => {
+                    // Only save if the value has changed
+                    if (input.value.trim() !== currentValue.trim()) {
+                        saveInlineEdit(cell, field, index, input.value);
+                    } else {
+                         // Revert the cell to static content if no change occurred
+                         cell.textContent = currentValue;
+                    }
+                };
+                
+                input.onkeypress = (e) => {
+                    if (e.key === 'Enter') {
+                        input.blur();
+                    }
+                };
+            }
+        }
+        function saveInlineEdit(cell, field, index, value) {
+            // 1. Update the underlying data model
+            clients[index][field] = value;
+            
+            // 2. Redraw the cell with the new static content/styling
+
+            // === CORRECTED LINE BELOW: Includes proposalStatus for styling ===
+            if (field === 'gstr9Status' || field === 'gstr9cStatus' || field === 'proposalStatus') {
+                // This line applies the <span class="status-..."> badge styling
+                cell.innerHTML = `<span class="status-${getStatusClass(value)}">${value}</span>`;
+            } 
+            // =============================================================
+            
+            else if (field === 'targetDate' || field === 'gstr9Date' || field === 'gstr9cDate') {
+                cell.textContent = formatDate(value);
+            } else {
+                cell.textContent = value;
+            }
+            
+            // 3. Complete saving process
+            isDataDirty = true;
+            saveData();
+            updateDashboard();
+            showSyncStatus('Changes saved!!!!!!!', 'saving');
+        }
+        // Client management functions
+        function showAddClientModal() {
+            editingIndex = -1;
+            document.getElementById('modalTitle').textContent = 'Add New Client';
+            document.getElementById('clientForm').reset();
+            document.getElementById('clientModal').style.display = 'block';
+        }
+
+        function editClient(index) {
+            editingIndex = index;
+            const client = clients[index];
+            document.getElementById('modalTitle').textContent = 'Edit Client';
+            
+            Object.keys(client).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = client[key] || '';
+                }
+            });
+            
+            document.getElementById('clientModal').style.display = 'block';
+        }
+
+        function deleteClient(index) {
+            if (confirm('Are you sure you want to delete this client record?')) {
+                clients.splice(index, 1);
+                saveData();
+                renderClientsTable();
+                updateDashboard();
+                showSyncStatus('Client deleted');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('clientModal').style.display = 'none';
+        }
+
+// In template.html, replace the existing saveClient function:
+
+        function saveClient(event) {
+            event.preventDefault();
+
+            // Helper to safely get value from the form element ID, defaulting to an empty string if not found.
+            const getFormValue = (id) => {
+                const element = document.getElementById(id);
+                return element ? element.value : '';
+            };
+
+            // Determine the base object (for defaults and existing data)
+            const baseClient = editingIndex >= 0 ? clients[editingIndex] : {};
+            
+            // --- Data Collection (Using Safe Access) ---
+            const clientData = {
+                // Core fields, read directly from form
+                sr: baseClient.sr || clients.length + 1,
+                clientName: getFormValue('clientName'),
+                gstin: getFormValue('gstin').toUpperCase(),
+                clientType: getFormValue('clientType'),
+                senior: getFormValue('senior'),
+                multiRegistration: getFormValue('multiRegistration'),
+                member: getFormValue('member'),
+                turnover: parseFloat(getFormValue('turnover') || 0) || 0,
+                papilioId: getFormValue('papilioId'),
+                
+                // Status fields
+                gstr9Status: getFormValue('gstr9Status') || 'Pending',
+                gstr9cStatus: getFormValue('gstr9cStatus') || 'Pending',
+                proposalStatus: getFormValue('proposalStatus') || 'Pending',
+                targetDate: getFormValue('targetDate'),
+                remarks: getFormValue('remarks'),
+
+                // --- Non-Form Fields (Read from existing client data if editing, or default if adding) ---
+                // These fields are NOT in the form, so we must rely on the existing client object:
+                gstr9Arn: baseClient.gstr9Arn || '',
+                gstr9Date: baseClient.gstr9Date || '',
+                gstr9cArn: baseClient.gstr9cArn || '',
+                gstr9cDate: baseClient.gstr9cDate || '',
+                mailSent: baseClient.mailSent || 'No',
+                papilioUpdate: baseClient.papilioUpdate || 'Pending',
+            };
+
+            if (editingIndex >= 0) {
+                // When editing: merge the existing data with the newly collected form data
+                clients[editingIndex] = { ...baseClient, ...clientData };
+            } else {
+                // When adding: push the new object
+                clients.push(clientData);
+            }
+            isDataDirty = true; // <-- NEW: Mark data as dirty
+
+            saveData();
+            renderClientsTable();
+            updateDashboard();
+            populateFilters();
+            closeModal();
+            showSyncStatus('Client saved');
+        }
+
+        function renderClientsTable() {
+            const thead = document.querySelector('#clientsTable thead tr');
+            const tbody = document.getElementById('clientsTableBody');
+            
+            // Update table headers based on visible columns
+            const headers = [
+                { key: 'sr', label: 'Sr' },
+                { key: 'clientName', label: 'Client Name' },
+                { key: 'gstin', label: 'GSTIN' },
+                { key: 'clientType', label: 'Type' },
+                { key: 'senior', label: 'Senior' },
+                { key: 'multiRegistration', label: 'Multi' },
+                { key: 'member', label: 'Member' },
+                { key: 'turnover', label: 'Turnover' },
+                { key: 'papilioId', label: 'Papilio ID' },
+                { key: 'gstr9Status', label: 'GSTR-9 Status' },
+                { key: 'gstr9cStatus', label: 'GSTR-9C Status' },
+                { key: 'proposalStatus', label: 'Proposal' },
+                { key: 'targetDate', label: 'Target Date' },
+                { key: 'gstr9Arn', label: 'GSTR-9 ARN' },
+                { key: 'gstr9Date', label: 'GSTR-9 Date' },
+                { key: 'gstr9cArn', label: 'GSTR-9C ARN' },
+                { key: 'gstr9cDate', label: 'GSTR-9C Date' },
+                { key: 'mailSent', label: 'Mail' },
+                { key: 'papilioUpdate', label: 'Papilio' },
+                { key: 'remarks', label: 'Remarks' },
+                { key: 'actions', label: 'Actions' }
+            ];
+
+            thead.innerHTML = headers.filter(h => visibleColumns[h.key]).map(h => `<th>${h.label}</th>`).join('');
+            
+            // Update table body
+            tbody.innerHTML = '';
+
+            clients.forEach((client, index) => {
+                const row = document.createElement('tr');
+                
+                const cells = [];
+                
+                if (visibleColumns.sr) cells.push(`<td>${client.sr || index + 1}</td>`);
+                if (visibleColumns.clientName) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'clientName', ${index})">${client.clientName || ''}</td>`);
+                if (visibleColumns.gstin) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'gstin', ${index})">${client.gstin || ''}</td>`);
+                if (visibleColumns.clientType) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'clientType', ${index})">${client.clientType || ''}</td>`);
+                if (visibleColumns.senior) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'senior', ${index})">${client.senior || ''}</td>`);
+                if (visibleColumns.multiRegistration) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'multiRegistration', ${index})">${client.multiRegistration || ''}</td>`);
+                if (visibleColumns.member) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'member', ${index})">${client.member || ''}</td>`);
+                if (visibleColumns.turnover) cells.push(`<td>₹${formatTurnover(client.turnover)}</td>`);
+                if (visibleColumns.papilioId) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'papilioId', ${index})">${client.papilioId || ''}</td>`);
+                if (visibleColumns.gstr9Status) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'gstr9Status', ${index})"><span class="status-${getStatusClass(client.gstr9Status)}">${client.gstr9Status || 'Pending'}</span></td>`);
+                if (visibleColumns.gstr9cStatus) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'gstr9cStatus', ${index})"><span class="status-${getStatusClass(client.gstr9cStatus)}">${client.gstr9cStatus || 'Pending'}</span></td>`);
+// FIX 1: Add span structure for Proposal status during initial table render
+                if (visibleColumns.proposalStatus) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'proposalStatus', ${index})"><span class="status-${getStatusClass(client.proposalStatus || 'Pending')}">${client.proposalStatus || 'Pending'}</span></td>`);                if (visibleColumns.gstr9Date) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'gstr9Date', ${index})">${formatDate(client.gstr9Date) || ''}</td>`);
+                if (visibleColumns.gstr9cArn) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'gstr9cArn', ${index})">${client.gstr9cArn || ''}</td>`);
+                if (visibleColumns.gstr9cDate) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'gstr9cDate', ${index})">${formatDate(client.gstr9cDate) || ''}</td>`);
+                if (visibleColumns.mailSent) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'mailSent', ${index})">${client.mailSent || 'No'}</td>`);
+                if (visibleColumns.papilioUpdate) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'papilioUpdate', ${index})">${client.papilioUpdate || 'Pending'}</td>`);
+                if (visibleColumns.remarks) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'remarks', ${index})" title="${client.remarks || ''}">${truncateText(client.remarks || '', 15)}</td>`);
+                if (visibleColumns.actions) cells.push(`<td><button class="edit-btn" onclick="editClient(${index})">Edit</button><button class="delete-btn" onclick="deleteClient(${index})">Delete</button></td>`);
+                                
+                row.innerHTML = cells.join('');
+                tbody.appendChild(row);
+            });
+        }
+
+        function getStatusClass(status) {
+            if (status === 'Filed') return 'filed';
+            if (status === 'In Progress') return 'progress';
+            return 'pending';
+        }
+
+        function formatTurnover(amount) {
+            if (!amount || amount === 0) return '0';
+            if (amount >= 10000000) {
+                return (amount / 10000000).toFixed(2) + ' Cr';
+            } else if (amount >= 100000) {
+                return (amount / 100000).toFixed(2) + ' L';
+            }
+            return amount.toLocaleString('en-IN');
+        }
+
+        function truncateText(text, maxLength) {
+            if (text.length <= maxLength) return text;
+            return text.substr(0, maxLength) + '...';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN');
+        }
+
+        function populateFilters() {
+            const seniors = [...new Set(clients.map(c => c.senior).filter(s => s))];
+            const members = [...new Set(clients.map(c => c.member).filter(m => m))];
+
+            // Populate senior filters
+            ['seniorFilter', 'reportSenior'].forEach(id => {
+                const select = document.getElementById(id);
+                const currentValue = select.value;
+
+                select.innerHTML = '<option value="">All Seniors</option>';
+                
+                masterData.seniors.forEach(senior => {
+                    const option = document.createElement('option');
+                    option.value = senior;
+                    option.textContent = senior;
+                    select.appendChild(option);
+                });
+
+                if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
+                    select.value = currentValue;
+                } else {
+                    select.selectedIndex = 0; // default to All Seniors
+                }
+            });
+
+            // Populate member filters
+            ['memberFilter', 'reportMember'].forEach(id => {
+                const select = document.getElementById(id);
+                const currentValue = select.value;
+
+                select.innerHTML = '<option value="">All Members</option>';
+                
+                masterData.members.forEach(member => {
+                    const option = document.createElement('option');
+                    option.value = member;
+                    option.textContent = member;
+                    select.appendChild(option);
+                });
+
+                if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
+                    select.value = currentValue;
+                } else {
+                    select.selectedIndex = 0; // default to All Members
+                }
+            });
+        }
+
+        // Master Data Management Functions
+        function loadMasterDataLists() {
+            loadSeniorsList();
+            loadMembersList();
+            loadProposalStatusList();
+            loadGstr9StatusList();
+            loadGstr9cStatusList();
+            loadCustomColumnsList();
+        }
+
+        function loadSeniorsList() {
+            const container = document.getElementById('seniorsList');
+            container.innerHTML = masterData.seniors.map(senior => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; background: white; margin: 2px 0; border-radius: 4px;">
+                    <span>${senior}</span>
+                        <button class="btn btn-danger" style="padding: 2px 6px; font-size: 10px;" onclick="removeSeniorName('${senior}')">×</button>
+                </div>
+            `).join('');
+        }
+
+        function loadMembersList() {
+            const container = document.getElementById('membersList');
+            container.innerHTML = masterData.members.map(member => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; background: white; margin: 2px 0; border-radius: 4px;">
+                    <span>${member}</span>
+                    <button class="btn btn-danger" style="padding: 2px 6px; font-size: 10px;" onclick="removeMemberName('${member}')">×</button>
+                </div>
+            `).join('');
+        }
+
+        function loadProposalStatusList() {
+            const container = document.getElementById('proposalStatusList');
+            container.innerHTML = masterData.proposalStatuses.map(status => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; background: white; margin: 2px 0; border-radius: 4px;">
+                    <span>${status}</span>
+                    <!--<button class="btn btn-danger" style="padding: 2px 6px; font-size: 10px;" onclick="removeProposalStatus('${status}')">×</button>-->
+                </div>
+            `).join('');
+        }
+
+        function loadGstr9StatusList() {
+            const container = document.getElementById('gstr9StatusList');
+            container.innerHTML = masterData.gstr9Statuses.map(status => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; background: white; margin: 2px 0; border-radius: 4px;">
+                    <span>${status}</span>
+                    <!--<button class="btn btn-danger" style="padding: 2px 6px; font-size: 10px;" onclick="removeGstr9Status('${status}')">×</button>-->
+                </div>
+            `).join('');
+        }
+
+        function loadGstr9cStatusList() {
+            const container = document.getElementById('gstr9cStatusList');
+            container.innerHTML = masterData.gstr9cStatuses.map(status => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; background: white; margin: 2px 0; border-radius: 4px;">
+                    <span>${status}</span>
+                    <!--<button class="btn btn-danger" style="padding: 2px 6px; font-size: 10px;" onclick="removeGstr9cStatus('${status}')">×</button>-->
+                </div>
+            `).join('');
+        }
+
+        function loadCustomColumnsList() {
+            const container = document.getElementById('customColumnsList');
+            container.innerHTML = masterData.customColumns.map(column => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; background: white; margin: 2px 0; border-radius: 4px;">
+                    <span>${column}</span>
+                    <button class="btn btn-danger" style="padding: 2px 6px; font-size: 10px;" onclick="removeCustomColumn('${column}')">×</button>
+                </div>
+            `).join('');
+        }
+
+        // Add functions for master data
+        function addSeniorName() {
+            const input = document.getElementById('newSeniorName');
+            const name = input.value.trim();
+
+            if (!name) return;
+
+            fetch('/api/add_senior', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                masterData.seniors = data.seniors;
+                loadSeniorsList();
+                populateFilters();
+
+                input.value = '';
+                showSyncStatus('Senior added');
+            });
+        }
+        function addMemberName() {
+            const input = document.getElementById('newMemberName');
+            const name = input.value.trim();
+
+            if (!name) return;
+
+            fetch('/api/add_member', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name })
+            })
+            .then(res => res.json())
+            .then(data => {
+                masterData.members = data.members;
+                loadMembersList();
+                populateFilters();
+                
+                input.value = '';
+                showSyncStatus('Member added');
+            });
+        }
+
+// ---------------------- ADD STATUS FUNCTIONS ----------------------
+
+        async function addProposalStatus() {
+            const input = document.getElementById('newProposalStatus');
+            const status = input.value.trim();
+            if (!status) return;
+
+            const res = await fetch('/api/add_proposal_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                masterData.proposalStatus = data.proposalStatuses;
+                input.value = "";
+                loadProposalStatusList();
+                populateFilters();
+                showSyncStatus("Proposal status added");
+            } else {
+                alert(data.error);
+            }
+        }
+
+        async function addGstr9Status() {
+            const input = document.getElementById('newGstr9Status');
+            const status = input.value.trim();
+            if (!status) return;
+
+            const res = await fetch('/api/add_gstr9_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                masterData.gstr9Status = data.gstr9Statuses;
+                input.value = "";
+                loadGstr9StatusList();
+                populateFilters();
+                showSyncStatus("GSTR-9 status added");
+            } else {
+                alert(data.error);
+            }
+        }
+
+        async function addGstr9cStatus() {
+            const input = document.getElementById('newGstr9cStatus');
+            const status = input.value.trim();
+            if (!status) return;
+
+            const res = await fetch('/api/add_gstr9c_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                masterData.gstr9cStatus = data.gstr9cStatuses;
+                input.value = "";
+                loadGstr9cStatusList();
+                populateFilters();
+                showSyncStatus("GSTR-9C status added");
+            } else {
+                alert(data.error);
+            }
+        }
+
+        function addCustomColumn() {
+            const input = document.getElementById('newColumnName');
+            const column = input.value.trim();
+            
+            if (!column) return;
+
+            fetch('/api/add_custom_column', { // <--- NEW API ENDPOINT
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: column }) // Use 'name' key matching Python
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                masterData.customColumns = data.customColumns; // Update local state
+                input.value = '';
+                loadCustomColumnsList(); // Refresh list display
+                // Note: saveMasterData is no longer strictly needed here since API handles persistence.
+                showSyncStatus('Custom column added');
+            })
+            .catch(error => {
+                console.error('Error adding custom column:', error);
+                showSyncStatus('Error adding column', 'error');
+            });
+        }
+
+        // Remove functions for master data
+        function removeSeniorName(name) {
+            fetch('/api/remove_senior', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name })
+            })
+            .then(res => res.json())
+            .then(data => {
+                masterData.seniors = data.seniors;
+                loadSeniorsList();
+                populateFilters();
+                showSyncStatus('Senior removed');
+            });
+        }
+
+        function removeMemberName(name) {
+            fetch('/api/remove_member', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name })
+            })
+            .then(res => res.json())
+            .then(data => {
+                masterData.members = data.members;
+                loadMembersList();
+                populateFilters();
+                showSyncStatus('Member removed');
+            });
+        }
+
+// ---------------------- REMOVE STATUS FUNCTIONS ----------------------
+
+        async function removeProposalStatus(status) {
+            const res = await fetch('/api/remove_proposal_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                masterData.proposalStatus = data.proposalStatuses;
+                loadProposalStatusList();
+                populateFilters();
+                showSyncStatus("Proposal status removed");
+            } else {
+                alert(data.error);
+            }
+        }
+
+        async function removeGstr9Status(status) {
+            const res = await fetch('/api/remove_gstr9_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                masterData.gstr9Status = data.gstr9Statuses;
+                loadGstr9StatusList();
+                populateFilters();
+                showSyncStatus("GSTR-9 status removed");
+            } else {
+                alert(data.error);
+            }
+        }
+
+        async function removeGstr9cStatus(status) {
+            const res = await fetch('/api/remove_gstr9c_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                masterData.gstr9cStatus = data.gstr9cStatuses;
+                loadGstr9cStatusList();
+                populateFilters();
+                showSyncStatus("GSTR-9C status removed");
+            } else {
+                alert(data.error);
+            }
+        }
+
+        function removeCustomColumn(column) {
+            if (!confirm(`Remove custom column "${column}"?`)) {
+                return;
+            }
+
+            fetch('/api/remove_custom_column', { // <--- NEW API ENDPOINT
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: column }) // Use 'name' key matching Python
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                
+                masterData.customColumns = data.customColumns; // Update local state
+                loadCustomColumnsList(); // Refresh list display
+                // Note: saveMasterData is no longer strictly needed here since API handles persistence.
+                showSyncStatus('Custom column removed');
+            })
+            .catch(error => {
+                console.error('Error removing custom column:', error);
+                showSyncStatus('Error removing column', 'error');
+            });
+        }
+
+        // Column Management Functions
+        function showColumnManager() {
+            const modal = document.getElementById('columnManagerModal');
+            const container = document.getElementById('columnCheckboxes');
+            
+            const columns = [
+                { key: 'sr', label: 'Sr' },
+                { key: 'clientName', label: 'Client Name' },
+                { key: 'gstin', label: 'GSTIN' },
+                { key: 'clientType', label: 'Client Type' },
+                { key: 'senior', label: 'Senior' },
+                { key: 'multiRegistration', label: 'Multi Registration' },
+                { key: 'member', label: 'Member' },
+                { key: 'turnover', label: 'Turnover' },
+                { key: 'papilioId', label: 'Papilio ID' },
+                { key: 'gstr9Status', label: 'GSTR-9 Status' },
+                { key: 'gstr9cStatus', label: 'GSTR-9C Status' },
+                { key: 'proposalStatus', label: 'Proposal Status' },
+                { key: 'targetDate', label: 'Target Date' },
+                { key: 'gstr9Arn', label: 'GSTR-9 ARN' },
+                { key: 'gstr9Date', label: 'GSTR-9 Date' },
+                { key: 'gstr9cArn', label: 'GSTR-9C ARN' },
+                { key: 'gstr9cDate', label: 'GSTR-9C Date' },
+                { key: 'mailSent', label: 'Mail Sent' },
+                { key: 'papilioUpdate', label: 'Papilio Update' },
+                { key: 'remarks', label: 'Remarks' },
+                { key: 'actions', label: 'Actions' }
+            ];
+            
+            container.innerHTML = columns.map(column => `
+                <label style="display: flex; align-items: center; gap: 8px; padding: 8px; background: #f8f9fa; border-radius: 4px;">
+                    <input type="checkbox" ${visibleColumns[column.key] ? 'checked' : ''} 
+                           onchange="toggleColumn('${column.key}', this.checked)">
+                    <span>${column.label}</span>
+                </label>
+            `).join('');
+            
+            modal.style.display = 'block';
+        }
+
+        function closeColumnManager() {
+            document.getElementById('columnManagerModal').style.display = 'none';
+        }
+
+        function toggleColumn(columnKey, isVisible) {
+            visibleColumns[columnKey] = isVisible;
+        }
+
+        function saveColumnSettings() {
+            renderClientsTable();
+            closeColumnManager();
+            showSyncStatus('Column settings updated');
+        }
+
+        function updateDashboard() {
+            const total = clients.length;
+            const gstr9Pending = clients.filter(c => c.gstr9Status === 'Pending' || c.gstr9Status === 'In Progress').length;
+            const gstr9Filed = clients.filter(c => c.gstr9Status === 'Filed').length;
+            const gstr9cPending = clients.filter(c => c.gstr9cStatus === 'Pending' || c.gstr9cStatus === 'In Progress').length;
+            const gstr9cFiled = clients.filter(c => c.gstr9cStatus === 'Filed').length;
+            const totalTurnover = clients.reduce((sum, client) => sum + (client.turnover || 0), 0);
+
+            document.getElementById('totalClients').textContent = total;
+            document.getElementById('gstr9Pending').textContent = gstr9Pending;
+            document.getElementById('gstr9Filed').textContent = gstr9Filed;
+            document.getElementById('gstr9cPending').textContent = gstr9cPending;
+            document.getElementById('gstr9cFiled').textContent = gstr9cFiled;
+            document.getElementById('totalTurnover').textContent = '₹' + formatTurnover(totalTurnover);
+
+            updateSeniorDashboard();
+            updateMemberDashboard();
+        }
+
+        function updateSeniorDashboard() {
+            const seniorData = {};
+            
+            clients.forEach(client => {
+                const senior = client.senior || 'Unassigned';
+                if (!seniorData[senior]) {
+                    seniorData[senior] = { 
+                        total: 0, 
+                        gstr9Filed: 0, 
+                        gstr9Pending: 0,
+                        gstr9cFiled: 0, 
+                        gstr9cPending: 0 
+                    };
+                }
+                seniorData[senior].total++;
+                
+                if (client.gstr9Status === 'Filed') {
+                    seniorData[senior].gstr9Filed++;
+                } else {
+                    seniorData[senior].gstr9Pending++;
+                }
+                
+                if (client.gstr9cStatus === 'Filed') {
+                    seniorData[senior].gstr9cFiled++;
+                } else {
+                    seniorData[senior].gstr9cPending++;
+                }
+            });
+
+            const tbody = document.getElementById('seniorDashboardBody');
+            tbody.innerHTML = Object.entries(seniorData).map(([senior, stats]) => {
+                const completionRate = stats.total > 0 ? 
+                    (((stats.gstr9Filed + stats.gstr9cFiled) / (stats.total * 2)) * 100).toFixed(1) : 0;
+                
+                return `
+                    <tr style="cursor: pointer;" onclick="filterBySenior('${senior}')">
+                        <td style="font-weight: bold;">${senior}</td>
+                        <td>${stats.total}</td>
+                        <td style="color: #28a745;">${stats.gstr9Filed}</td>
+                        <td style="color: #ffc107;">${stats.gstr9Pending}</td>
+                        <td style="color: #28a745;">${stats.gstr9cFiled}</td>
+                        <td style="color: #ffc107;">${stats.gstr9cPending}</td>
+                        <td>${completionRate}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateMemberDashboard() {
+            const memberData = {};
+            
+            clients.forEach(client => {
+                const member = client.member || 'Unassigned';
+                if (!memberData[member]) {
+                    memberData[member] = { 
+                        total: 0, 
+                        senior: client.senior,
+                        gstr9Filed: 0, 
+                        gstr9Pending: 0,
+                        gstr9cFiled: 0, 
+                        gstr9cPending: 0 
+                    };
+                }
+                memberData[member].total++;
+                
+                if (client.gstr9Status === 'Filed') {
+                    memberData[member].gstr9Filed++;
+                } else {
+                    memberData[member].gstr9Pending++;
+                }
+                
+                if (client.gstr9cStatus === 'Filed') {
+                    memberData[member].gstr9cFiled++;
+                } else {
+                    memberData[member].gstr9cPending++;
+                }
+            });
+
+            const tbody = document.getElementById('memberDashboardBody');
+            tbody.innerHTML = Object.entries(memberData).map(([member, stats]) => {
+                const completionRate = stats.total > 0 ? 
+                    (((stats.gstr9Filed + stats.gstr9cFiled) / (stats.total * 2)) * 100).toFixed(1) : 0;
+                
+                return `
+                    <tr style="cursor: pointer;" onclick="filterByMember('${member}')">
+                        <td style="font-weight: bold;">${member}</td>
+                        <td>${stats.senior || '-'}</td>
+                        <td>${stats.total}</td>
+                        <td style="color: #28a745;">${stats.gstr9Filed}</td>
+                        <td style="color: #ffc107;">${stats.gstr9Pending}</td>
+                        <td style="color: #28a745;">${stats.gstr9cFiled}</td>
+                        <td style="color: #ffc107;">${stats.gstr9cPending}</td>
+                        <td>${completionRate}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterBySenior(senior) {
+            showTab('tracker');
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector('.nav-tab:nth-child(2)').classList.add('active');
+            
+            clearFilters();
+            document.getElementById('seniorFilter').value = senior === 'Unassigned' ? '' : senior;
+            applyFilters();
+        }
+
+        function filterByMember(member) {
+            showTab('tracker');
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector('.nav-tab:nth-child(2)').classList.add('active');
+            
+            clearFilters();
+            document.getElementById('memberFilter').value = member === 'Unassigned' ? '' : member;
+            applyFilters();
+        }
+
+        // Report generation
+function generateReport() {
+    const reportType = document.getElementById('reportType').value;
+    const seniorFilter = document.getElementById('reportSenior').value;
+    const memberFilter = document.getElementById('reportMember').value;
+    
+    // console.log(`[DEBUG:GENERATE] Filters: Type=${reportType}, Senior=${seniorFilter}, Member=${memberFilter}`);
+    
+    let filteredClients = clients;
+    if (seniorFilter !== 'all' && seniorFilter !== '') {
+        filteredClients = filteredClients.filter(c => c.senior === seniorFilter);
+    }
+    if (memberFilter !== 'all' && memberFilter !== '') {
+        filteredClients = filteredClients.filter(c => c.member === memberFilter);
+    }
+
+    const reportOutput = document.getElementById('reportOutput');
+    
+    switch (reportType) {
+        case 'status':
+            generateStatusReport(filteredClients, reportOutput);
+            break;
+        case 'senior':
+            generateSeniorReport(filteredClients, reportOutput);
+            break;
+        case 'member':
+            generateMemberReport(filteredClients, reportOutput);
+            break;
+        case 'turnover':
+            generateTurnoverReport(filteredClients, reportOutput);
+            break;
+        case 'pending':
+            generatePendingReport(filteredClients, reportOutput);
+            break;
+        case 'filed':
+            generateFiledReport(filteredClients, reportOutput);
+            break;
+        default:
+             reportOutput.innerHTML = `<p style="color:red;">Invalid report type selected.</p>`;
+    }
+    // console.log(`[DEBUG:GENERATE] Report HTML updated.`);
+}
+
+        function generateSeniorReport(data, container) {
+            const seniorData = {};
+            let grandTotal = { total: 0, gstr9Filed: 0, gstr9cFiled: 0, turnover: 0 };
+            
+            data.forEach(client => {
+                const senior = client.senior || 'Unassigned';
+                if (!seniorData[senior]) {
+                    seniorData[senior] = {
+                        total: 0,
+                        gstr9Filed: 0,
+                        gstr9cFiled: 0,
+                        gstr9InProgress: 0,
+                        gstr9cInProgress: 0,
+                        totalTurnover: 0
+                    };
+                }
+                
+                seniorData[senior].total++;
+                seniorData[senior].totalTurnover += client.turnover || 0;
+                
+                if (client.gstr9Status === 'Filed') seniorData[senior].gstr9Filed++;
+                if (client.gstr9cStatus === 'Filed') seniorData[senior].gstr9cFiled++;
+                if (client.gstr9Status === 'In Progress') seniorData[senior].gstr9InProgress++;
+                if (client.gstr9cStatus === 'In Progress') seniorData[senior].gstr9cInProgress++;
+                
+                // Grand totals
+                grandTotal.total++;
+                grandTotal.turnover += client.turnover || 0;
+                if (client.gstr9Status === 'Filed') grandTotal.gstr9Filed++;
+                if (client.gstr9cStatus === 'Filed') grandTotal.gstr9cFiled++;
+            });
+
+            container.innerHTML = `
+                <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <h4>Senior-wise Detailed Report</h4>
+                    <div style="overflow-x: auto; margin-top: 20px;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Senior</th>
+                                    <th>Total Clients</th>
+                                    <th>GSTR-9 Filed</th>
+                                    <th>GSTR-9 WIP</th>
+                                    <th>GSTR-9C Filed</th>
+                                    <th>GSTR-9C WIP</th>
+                                    <th>Total Turnover</th>
+                                    <th>Completion %</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Object.entries(seniorData).map(([senior, stats]) => {
+                                    const completionRate = stats.total > 0 ? 
+                                        (((stats.gstr9Filed + stats.gstr9cFiled) / (stats.total * 2)) * 100).toFixed(1) : 0;
+                                    
+                                    return `
+                                        <tr>
+                                            <td style="font-weight: bold;">${senior}</td>
+                                            <td>${stats.total}</td>
+                                            <td style="color: #28a745;">${stats.gstr9Filed}</td>
+                                            <td style="color: #ffc107;">${stats.gstr9InProgress}</td>
+                                            <td style="color: #28a745;">${stats.gstr9cFiled}</td>
+                                            <td style="color: #ffc107;">${stats.gstr9cInProgress}</td>
+                                            <td>₹${formatTurnover(stats.totalTurnover)}</td>
+                                            <td>${completionRate}%</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                                <tr style="background: #f8f9fa; font-weight: bold; border-top: 2px solid #dee2e6;">
+                                    <td>TOTAL</td>
+                                    <td>${grandTotal.total}</td>
+                                    <td style="color: #28a745;">${grandTotal.gstr9Filed}</td>
+                                    <td>-</td>
+                                    <td style="color: #28a745;">${grandTotal.gstr9cFiled}</td>
+                                    <td>-</td>
+                                    <td>₹${formatTurnover(grandTotal.turnover)}</td>
+                                    <td>${grandTotal.total > 0 ? (((grandTotal.gstr9Filed + grandTotal.gstr9cFiled) / (grandTotal.total * 2)) * 100).toFixed(1) : 0}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateMemberReport(data, container) {
+            const memberData = {};
+            let grandTotal = { total: 0, gstr9Filed: 0, gstr9cFiled: 0, turnover: 0 };
+            
+            data.forEach(client => {
+                const member = client.member || 'Unassigned';
+                if (!memberData[member]) {
+                    memberData[member] = {
+                        total: 0,
+                        gstr9Filed: 0,
+                        gstr9cFiled: 0,
+                        gstr9InProgress: 0,
+                        gstr9cInProgress: 0,
+                        totalTurnover: 0,
+                        senior: client.senior
+                    };
+                }
+                
+                memberData[member].total++;
+                memberData[member].totalTurnover += client.turnover || 0;
+                
+                if (client.gstr9Status === 'Filed') memberData[member].gstr9Filed++;
+                if (client.gstr9cStatus === 'Filed') memberData[member].gstr9cFiled++;
+                if (client.gstr9Status === 'In Progress') memberData[member].gstr9InProgress++;
+                if (client.gstr9cStatus === 'In Progress') memberData[member].gstr9cInProgress++;
+                
+                // Grand totals
+                grandTotal.total++;
+                grandTotal.turnover += client.turnover || 0;
+                if (client.gstr9Status === 'Filed') grandTotal.gstr9Filed++;
+                if (client.gstr9cStatus === 'Filed') grandTotal.gstr9cFiled++;
+            });
+
+            container.innerHTML = `
+                <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <h4>Member-wise Detailed Report</h4>
+                    <div style="overflow-x: auto; margin-top: 20px;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Member</th>
+                                    <th>Senior</th>
+                                    <th>Total Clients</th>
+                                    <th>GSTR-9 Filed</th>
+                                    <th>GSTR-9 WIP</th>
+                                    <th>GSTR-9C Filed</th>
+                                    <th>GSTR-9C WIP</th>
+                                    <th>Total Turnover</th>
+                                    <th>Completion %</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Object.entries(memberData).map(([member, stats]) => {
+                                    const completionRate = stats.total > 0 ? 
+                                        (((stats.gstr9Filed + stats.gstr9cFiled) / (stats.total * 2)) * 100).toFixed(1) : 0;
+                                    
+                                    return `
+                                        <tr>
+                                            <td style="font-weight: bold;">${member}</td>
+                                            <td>${stats.senior || '-'}</td>
+                                            <td>${stats.total}</td>
+                                            <td style="color: #28a745;">${stats.gstr9Filed}</td>
+                                            <td style="color: #ffc107;">${stats.gstr9InProgress}</td>
+                                            <td style="color: #28a745;">${stats.gstr9cFiled}</td>
+                                            <td style="color: #ffc107;">${stats.gstr9cInProgress}</td>
+                                            <td>₹${formatTurnover(stats.totalTurnover)}</td>
+                                            <td>${completionRate}%</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                                <tr style="background: #f8f9fa; font-weight: bold; border-top: 2px solid #dee2e6;">
+                                    <td>TOTAL</td>
+                                    <td>-</td>
+                                    <td>${grandTotal.total}</td>
+                                    <td style="color: #28a745;">${grandTotal.gstr9Filed}</td>
+                                    <td>-</td>
+                                    <td style="color: #28a745;">${grandTotal.gstr9cFiled}</td>
+                                    <td>-</td>
+                                    <td>₹${formatTurnover(grandTotal.turnover)}</td>
+                                    <td>${grandTotal.total > 0 ? (((grandTotal.gstr9Filed + grandTotal.gstr9cFiled) / (grandTotal.total * 2)) * 100).toFixed(1) : 0}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+function generateStatusReport(data, container) {
+    const gstr9Filed = data.filter(c => c.gstr9Status === 'Filed').length;
+    const gstr9Pending = data.filter(c => c.gstr9Status === 'Pending' || c.gstr9Status === 'In Progress').length;
+    const gstr9cFiled = data.filter(c => c.gstr9cStatus === 'Filed').length;
+    const gstr9cPending = data.filter(c => c.gstr9cStatus === 'Pending' || c.gstr9cStatus === 'In Progress').length;
+    
+    const overallCompletionRate = data.length > 0 ? (((gstr9Filed + gstr9cFiled) / (data.length * 2)) * 100).toFixed(1) : 0;
+
+    // FIX 1: We must output a table structure for consistent export, even if it's just summary data.
+    container.innerHTML = `
+        <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <h4>GSTR Status Summary (${data.length} clients)</h4>
+            
+            <div class="stats-grid" style="margin-top: 20px;">
+                <div class="stat-card">
+                    <div class="stat-number">${gstr9Filed}</div>
+                    <div class="stat-label">GSTR-9 Filed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${gstr9Pending}</div>
+                    <div class="stat-label">GSTR-9 Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${gstr9cFiled}</div>
+                    <div class="stat-label">GSTR-9C Filed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${gstr9cPending}</div>
+                    <div class="stat-label">GSTR-9C Pending</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <p style="font-weight: bold; color: #495057;">Overall Completion Rate: ${overallCompletionRate}%</p>
+            </div>
+
+            <table class="data-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>GSTR-9 Filed</th>
+                        <th>GSTR-9 Pending/WIP</th>
+                        <th>GSTR-9C Filed</th>
+                        <th>GSTR-9C Pending/WIP</th>
+                        <th>Total Clients</th>
+                        <th>Completion Rate %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Summary</td>
+                        <td>${gstr9Filed}</td>
+                        <td>${gstr9Pending}</td>
+                        <td>${gstr9cFiled}</td>
+                        <td>${gstr9cPending}</td>
+                        <td>${data.length}</td>
+                        <td>${overallCompletionRate}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+function generateTurnoverReport(data, container) {
+    const totalTurnover = data.reduce((sum, client) => sum + (client.turnover || 0), 0);
+    const withTurnover = data.filter(c => (c.turnover || 0) > 0);
+    const avgTurnover = withTurnover.length > 0 ? totalTurnover / withTurnover.length : 0;
+    const topClients = withTurnover.sort((a, b) => (b.turnover || 0) - (a.turnover || 0)).slice(0, 10);
+    
+    container.innerHTML = `
+        <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <h4>Turnover Analysis (${data.length} clients)</h4>
+            <div class="stats-grid" style="margin-top: 20px;">
+                <div class="stat-card">
+                    <div class="stat-number">₹${formatTurnover(totalTurnover)}</div>
+                    <div class="stat-label">Total Turnover</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">₹${formatTurnover(avgTurnover)}</div>
+                    <div class="stat-label">Average Turnover</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${withTurnover.length}</div>
+                    <div class="stat-label">Clients with Turnover</div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h5>Top Clients by Turnover</h5>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Client Name</th>
+                                <th>Turnover</th>
+                                <th>Senior</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${topClients.map(client => `
+                                <tr>
+                                    <td>${client.clientName}</td>
+                                    <td>₹${formatTurnover(client.turnover)}</td>
+                                    <td>${client.senior}</td>
+                                    <td>${client.clientType}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+        function generatePendingReport(data, container) {
+            const pending = data.filter(c => 
+                c.gstr9Status === 'Pending' || c.gstr9Status === 'In Progress' ||
+                c.gstr9cStatus === 'Pending' || c.gstr9cStatus === 'In Progress'
+            );
+
+            container.innerHTML = `
+                <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <h4>Pending Returns Report</h4>
+                    <p style="margin: 15px 0; color: #6c757d;">Total Pending: ${pending.length} clients</p>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>GSTIN</th>
+                                    <th>GSTR-9 Status</th>
+                                    <th>GSTR-9C Status</th>
+                                    <th>Target Date</th>
+                                    <th>Senior</th>
+                                    <th>Member</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${pending.map(client => `
+                                    <tr>
+                                        <td>${client.clientName}</td>
+                                        <td>${client.gstin}</td>
+                                        <td><span class="status-${getStatusClass(client.gstr9Status)}">${client.gstr9Status}</span></td>
+                                        <td><span class="status-${getStatusClass(client.gstr9cStatus)}">${client.gstr9cStatus}</span></td>
+                                        <td>${formatDate(client.targetDate)}</td>
+                                        <td>${client.senior}</td>
+                                        <td>${client.member}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateFiledReport(data, container) {
+            const filed = data.filter(c => c.gstr9Status === 'Filed' || c.gstr9cStatus === 'Filed');
+
+            container.innerHTML = `
+                <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <h4>Filed Returns Report</h4>
+                    <p style="margin: 15px 0; color: #6c757d;">Total Filed: ${filed.length} clients</p>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>GSTIN</th>
+                                    <th>GSTR-9 Status</th>
+                                    <th>GSTR-9C Status</th>
+                                    <th>GSTR-9 Date</th>
+                                    <th>GSTR-9C Date</th>
+                                    <th>Senior</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${filed.map(client => `
+                                    <tr>
+                                        <td>${client.clientName}</td>
+                                        <td>${client.gstin}</td>
+                                        <td><span class="status-${getStatusClass(client.gstr9Status)}">${client.gstr9Status}</span></td>
+                                        <td><span class="status-${getStatusClass(client.gstr9cStatus)}">${client.gstr9cStatus}</span></td>
+                                        <td>${formatDate(client.gstr9Date)}</td>
+                                        <td>${formatDate(client.gstr9cDate)}</td>
+                                        <td>${client.senior}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Export functions
+        function exportData() {
+            exportToExcel(clients, 'GST_Annual_Returns_Complete');
+        }
+
+        function exportFilteredData() {
+            const visibleRows = Array.from(document.querySelectorAll('#clientsTableBody tr')).filter(row => 
+                row.style.display !== 'none'
+            );
+            
+            const filteredClients = visibleRows.map(row => {
+                const index = parseInt(row.querySelector('td').textContent) - 1;
+                return clients[index];
+            }).filter(client => client);
+            
+            exportToExcel(filteredClients, 'GST_Annual_Returns_Filtered');
+        }
+
+function exportReport() {
+    // 1. FIX: Call generateReport() to ensure the HTML table is generated
+    generateReport(); 
+    
+    const reportType = document.getElementById('reportType').value;
+    const reportOutput = document.getElementById('reportOutput');
+    
+    // console.log('[DEBUG:EXPORT] Searching for table in reportOutput...');
+    const table = reportOutput.querySelector('table');
+    
+    if (!table || table.querySelector('tbody').children.length === 0 && reportType !== 'status') {
+        // console.error('EXPORT ERROR: Table element not found or tbody is empty.');
+        alert('Error: Could not find report data table for export. The generated report might be empty.');
+        return;
+    }
+    
+    // 2. Extract table data from the report
+    const data = [];
+    const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
+    data.push(headers);
+    
+    table.querySelectorAll('tbody tr').forEach(row => {
+        const rowData = Array.from(row.querySelectorAll('td')).map(td => {
+             // Clean up styled text (like currency symbols or nested spans) before export
+             const cellText = td.querySelector('span') ? td.querySelector('span').textContent : td.textContent;
+             return cellText.trim().replace(/₹/g, '').replace(/\,/g, '');
+        });
+        data.push(rowData);
+    });
+    
+    // console.log(`[DEBUG:EXPORT] Extracted ${data.length} rows for export.`);
+    
+    // 3. Export
+    exportArrayToExcel(data, `${reportType}_report`);
+}
+        function exportToExcel(data, filename) {
+            const headers = ['Sr', 'Client Name', 'GSTIN', 'Client Type', 'Senior', 'Multi Registration', 'Member', 
+                           'Turnover', 'Papilio ID', 'GSTR-9 Status', 'GSTR-9C Status', 'Proposal Status', 
+                           'Target Date', 'GSTR-9 ARN', 'GSTR-9 Date', 'GSTR-9C ARN', 'GSTR-9C Date', 
+                           'Completion mail Sent', 'Update of Papilio Service', 'Remarks'];
+            
+            const csvContent = [
+                headers.join(','),
+                ...data.map((client, index) => [
+                    client.sr || (index + 1),
+                    `"${client.clientName || ''}"`,
+                    client.gstin || '',
+                    `"${client.clientType || ''}"`,
+                    `"${client.senior || ''}"`,
+                    client.multiRegistration || '',
+                    `"${client.member || ''}"`,
+                    client.turnover || 0,
+                    client.papilioId || '',
+                    client.gstr9Status || '',
+                    client.gstr9cStatus || '',
+                    client.proposalStatus || '',
+                    client.targetDate || '',
+                    client.gstr9Arn || '',
+                    client.gstr9Date || '',
+                    client.gstr9cArn || '',
+                    client.gstr9cDate || '',
+                    client.mailSent || '',
+                    client.papilioUpdate || '',
+                    `"${client.remarks || ''}"`
+                ].join(','))
+            ].join('\n');
+
+            downloadCSV(csvContent, filename);
+        }
+
+        function exportArrayToExcel(data, filename) {
+            const csvContent = data.map(row => 
+                row.map(cell => `"${cell}"`).join(',')
+            ).join('\n');
+            
+            downloadCSV(csvContent, filename);
+        }
+
+        function downloadCSV(csvContent, filename) {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `${filename}_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showSyncStatus('Exported successfully');
+        }
+
+        // Settings functions
+        function saveSettings() {
+            const firmName = document.getElementById('settingsFirmName').value;
+            document.getElementById('firmNameDisplay').textContent = firmName;
+            
+            // Update auto-save interval
+            clearInterval(autoSaveTimer);
+            initAutoSave();
+            
+            showSyncStatus('Settings updated');
+        }
+
+        // Data management - now via backend APIs
+        async function saveData() {
+            try {
+
+                const completeClients = clients.map((client, i) => ({
+                sr: client.sr || i+1,
+                clientName: client.clientName || '',
+                gstin: client.gstin || '',
+                clientType: client.clientType || '',
+                senior: client.senior || '',
+                multiRegistration: client.multiRegistration || '',
+                member: client.member || '',
+                turnover: client.turnover || 0,
+                papilioId: client.papilioId || '',
+                gstr9Status: client.gstr9Status || 'Pending',
+                gstr9cStatus: client.gstr9cStatus || 'Pending',
+                proposalStatus: client.proposalStatus || 'Pending',
+                targetDate: client.targetDate || '',
+                gstr9Arn: client.gstr9Arn || '',
+                gstr9Date: client.gstr9Date || '',
+                gstr9cArn: client.gstr9cArn || '',
+                gstr9cDate: client.gstr9cDate || '',
+                mailSent: client.mailSent || 'No',
+                papilioUpdate: client.papilioUpdate || 'Pending',
+                remarks: client.remarks || ''
+            }));
+
+                // console.log('🔥 SAVE DATA TRIGGERED - clients[0] keys:', Object.keys(clients[0] || {}));
+                // console.log('🔥 Missing fields?', ALL_CLIENT_HEADERS.filter(h => !clients[0]?.[h]));
+                const response = await fetch('/api/clients/save/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({clients: completeClients})
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to save data');
+                }
+            } catch (error) {
+                console.error(error);
+                showSyncStatus('Error saving data', 'error');
+            }
+        }
+
+        async function loadClientsFromApi() {
+            try {
+                // --- START FIX: Implement Cache Busting ---
+                // 1. Generate a unique timestamp (cache buster)
+                const cacheBuster = new Date().getTime();
+                // 2. Construct the URL with the cache buster parameter to force a fresh request
+                const url = `/api/clients/?_t=${cacheBuster}`; 
+                
+                // 3. Use the cache-busting URL in the fetch request
+                const response = await fetch(url);
+                // --- END FIX ---
+
+                if (!response.ok) {
+                    throw new Error('Failed to load clients');
+                }
+                
+                const data = await response.json();
+                const rows = data.clients || [];
+
+                // Map CSV-shaped rows into internal client objects
+                // Locate the loadClientsFromApi function and replace the row mapping:
+
+            clients = rows.map((row, index) => ({
+                // Use the short, camelCase keys from your actual CSV headers
+                sr: parseInt(row['sr']) || index + 1,
+                clientName: row['clientName'] || '',
+                gstin: (row['gstin'] || '').toUpperCase(),
+                clientType: row['clientType'] || '',
+                senior: row['senior'] || '',
+                
+                // Use the correct header 'multiRegistration'
+                multiRegistration: row['multiRegistration'] === 'Multiple' ? 'Yes' : 'No', 
+                
+                member: row['member'] || '',
+                turnover: parseTurnover(row['turnover'] || ''),
+                papilioId: row['papilioId'] || '',
+                
+                // Status fields
+                gstr9Status: mapStatus(row['gstr9Status'] || ''),
+                gstr9cStatus: mapStatus(row['gstr9cStatus'] || ''),
+                proposalStatus: mapProposalStatus(row['proposalStatus'] || ''),
+                
+                // Date/ARN fields using the correct short headers
+                targetDate: row['targetDate'] || '',
+                gstr9Arn: row['gstr9Arn'] || '',
+                gstr9Date: row['gstr9Date'] || '',
+                gstr9cArn: row['gstr9cArn'] || '',
+                gstr9cDate: row['gstr9cDate'] || '',
+                
+                // Remaining fields
+                mailSent: row['mailSent'] || 'No',
+                papilioUpdate: row['papilioUpdate'] || 'Pending',
+                remarks: row['remarks'] || ''
+            }));
+            } catch (error) {
+                console.error(error);
+                showSyncStatus('Error loading clients', 'error');
+            }
+        }
+        async function loadMasterDataFromApi() {
+            try {
+                const response = await fetch('/api/master-data/');
+                if (!response.ok) {
+                    throw new Error('Failed to load master data');
+                }
+                const data = await response.json();
+                masterData = {
+                    seniors: data.seniors || [],
+                    members: data.members || [],
+                    proposalStatuses: data.proposalStatuses || [],
+                    gstr9Statuses: data.gstr9Statuses || [],
+                    gstr9cStatuses: data.gstr9cStatuses || [],
+                    customColumns: data.customColumns || []
+                };
+            } catch (error) {
+                console.error(error);
+                showSyncStatus('Error loading master data', 'error');
+            }
+        }
+
+        function saveAllChanges() {
+            saveData();
+            showSyncStatus('All changes saved');
+        }
+
+        // Helper functions for data cleaning
+        function cleanText(text) {
+            if (!text || text === '-' || text.trim() === '') return '';
+            return text.trim().replace(/"/g, '');
+        }
+
+        function parseTurnover(turnoverText) {
+            if (!turnoverText || turnoverText.trim() === '' || turnoverText.trim() === '-') return 0;
+            
+            // Remove spaces, commas and extract numbers
+            const cleanedText = turnoverText.replace(/[\s,]/g, '');
+            const number = parseFloat(cleanedText);
+            return isNaN(number) ? 0 : number;
+        }
+        // Add this helper function:
+        function robustClean(text) {
+            if (!text) return '';
+            // Use replace(/[^A-Za-z0-9\s]/g, '') to remove ALL non-alphanumeric/non-space characters, 
+            // and then trim whitespace. This is a very safe method for expected status strings.
+            return String(text).trim().replace(/[^A-Za-z0-9\s]/g, '').trim(); 
+        }
+
+        function mapStatus(status) {
+    // 1. Use the robust cleaner immediately
+    const cleanedStatus = robustClean(status); 
+    
+    // 2. Check for empty string after cleaning
+    if (cleanedStatus === '') return 'Pending';
+
+    // 3. Map based on the cleaned value (ensure we check against the master list)
+    const upperStatus = cleanedStatus.toUpperCase();
+
+    switch (upperStatus) {
+        case 'WIP':
+        case 'IN PROGRESS':
+            return 'In Progress';
+        case 'NA':
+            return 'Not Applicable';
+        case 'FILED':
+            return 'Filed';
+        case 'PENDING':
+        case 'SELECT':
+            return 'Pending';
+        default:
+            // If it's a known status like 'Filed' but wasn't handled in the switch, 
+            // return the cleaned version.
+            return cleanedStatus; 
+    }
+}
+        function mapProposalStatus(status) {
+            if (!status || status === '') return 'Pending';
+            
+            switch (status.toUpperCase()) {
+                case 'SELECT':
+                    return 'Pending';
+                default:
+                    return status;
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('clientModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        window.onload = async function () {
+
+            // Load API data first
+            await loadMasterDataFromApi();
+            populateSeniorDropdown();
+
+            // ===== Firm name display only (no editing) =====
+            const display = document.getElementById('firmNameDisplay');
+            const hiddenField = document.getElementById('settingsFirmName');
+
+            // Validate elements
+            if (!display) {
+                console.error("Firm name display element not found in the DOM");
+                return;
+            }
+
+            if (!hiddenField) {
+                console.error("Firm name hidden field not found in the DOM");
+                return;
+            }
+
+            // Just set the hidden field based on display text (no edits allowed)
+            hiddenField.value = display.textContent;
+            };
+
+        // Populate senior dropdown
+        function populateSeniorDropdown() {
+        const seniorSelect = document.getElementById('senior');
+        if (!seniorSelect) return;
+
+        seniorSelect.innerHTML = '<option value="">Select Senior</option>';
+
+        masterData.seniors.forEach(name => {
+            const opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = name;
+            seniorSelect.appendChild(opt);
+        });
+        }
+
+        async function loadActualDataAgain() {
+            if (!confirm("Are you sure you want to reload all data from the server? Unsaved changes (if any) might be lost.")) {
+                return;
+            }
+
+            showSyncStatus('Reloading data...', 'saving');
+            
+            try {
+                await loadMasterDataFromApi(); // Ensure master data is latest
+                await loadClientsFromApi();
+
+                // Re-render the UI elements
+                updateDashboard();
+                renderClientsTable();
+                populateFilters();
+                loadMasterDataLists();
+                
+                showSyncStatus(`Successfully reloaded ${clients.length} client records.`);
+                
+            } catch (error) {
+                console.error("Reload failed:", error);
+                showSyncStatus('Data Reload Failed!', 'error');
+            }
+        }
+
+        async function clearAllData(){
+            showSyncStatus(`Comming Soon!`)
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('trackerFileInput');
+        if (fileInput) {
+            // When a file is selected (change event), call the upload function
+            fileInput.addEventListener('change', uploadTrackerFile);
+        }
+    });
+
+    async function uploadTrackerFile() {
+        const fileInput = document.getElementById('trackerFileInput');
+        
+        // 1. Validation (Checks if a file was selected)
+        if (fileInput.files.length === 0) {
+            // If the dialog was canceled, simply return.
+            return; 
+        }
+        
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        showSyncStatus('Uploading and processing data...', 'saving');
+
+        try {
+            const response = await fetch('/api/upload_tracker/', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // After successful upload, reload the clients table from the server
+                await loadClientsFromApi(); 
+                renderClientsTable();
+                updateDashboard();
+                populateFilters();
+                showSyncStatus(`Data updated: ${data.count} records loaded.`);
+            } else {
+                showSyncStatus(`Error: ${data.error || 'Unknown upload error'}`, 'error');
+            }
+        } catch (e) {
+            showSyncStatus('Network Error during upload.', 'error');
+        } finally {
+            // CRITICAL: Reset the input field so the 'change' event fires again 
+            // if the user uploads the same file twice.
+            fileInput.value = ''; 
+        }
+    }
+    // Function to handle clearing all data via the API endpoint
+async function clearAllData() {
+    if (!confirm("Are you sure you want to delete ALL client records? This action cannot be undone.")) {
+        return;
+    }
+
+    showSyncStatus('Clearing all data...', 'error');
+
+    try {
+        // Send a POST request to the API endpoint defined to clear data (api_clear_clients)
+        const response = await fetch('/api/clear_clients/', {
+            method: 'POST',
+            headers: {
+                // Setting Content-Type is standard for POST requests
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}), // Send an empty payload
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // 1. Clear local state and reset dirty flag
+            clients = [];
+            isDataDirty = false;
+
+            // 2. Refresh UI elements to show empty state
+            renderClientsTable();
+            updateDashboard();
+            populateFilters();
+            
+            showSyncStatus('✅ All client data has been permanently deleted.', 'success');
+        } else {
+            showSyncStatus(`Error clearing data: ${data.error || 'Unknown API error'}`, 'error');
+            console.error('API Error:', data);
+        }
+    } catch (e) {
+        showSyncStatus('Network Error during data clear.', 'error');
+        console.error('Network Error:', e);
+    }
+}        // // Initialize application on load
+        // setTimeout(() => {
+        //     if (clients.length === 0) {
+        //         console.log('Loading actual client data from paste.txt...');
+        //         loadActualData();
+        //         saveData();
+        //         renderClientsTable();
+        //         updateDashboard();
+        //         populateFilters();
+        //         console.log(`Loaded ${clients.length} clients successfully!`);
+                
+        //         // Show success message
+        //         setTimeout(() => {
+        //             showSyncStatus(`✅ Loaded ${clients.length} clients!`);
+        //         }, 500);
+        //     }
+        // }, 1000);
+    </script>
+</body>
+</html>
