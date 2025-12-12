@@ -554,6 +554,14 @@
     background-color: #dc3545;
 }
 
+.reload-btn {
+    background-color: #1A8FB8;
+}
+.backup-btn {
+    background-color: #1A8FB8;
+}
+
+
 .clear-btn:hover {
     background-color: #bb2d3b;
 }
@@ -920,9 +928,9 @@
             <div class="export-section">
                 <h4 style="margin-bottom: 15px;">Data Management</h4>
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <button class="btn btn-success" onclick="loadActualDataAgain()">🔄 Reload Data</button>
-                    <button class="btn btn-secondary" onclick="exportData()">📤 Backup Data</button>
-                    <button class="btn btn-warning" onclick="clearAllData()">🗑️ Clear All Data</button>
+                    <button class="btn reload-btn" onclick="loadActualDataAgain()">Reload Data</button>
+                    <button class="btn btn-backup" onclick="exportData()">Backup Data</button>
+                    <button class="btn clear-btn" onclick="clearAllData()">Clear All Data</button>
                 </div>
             </div>
         </div>
@@ -2935,9 +2943,7 @@ function exportReport() {
             }
         }
 
-        async function clearAllData(){
-            showSyncStatus(`Comming Soon!`)
-        }
+
         document.addEventListener('DOMContentLoaded', function() {
         const fileInput = document.getElementById('trackerFileInput');
         if (fileInput) {
