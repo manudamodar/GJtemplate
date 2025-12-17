@@ -1398,14 +1398,14 @@
             editingIndex = index;
             const client = clients[index];
             document.getElementById('modalTitle').textContent = 'Edit Client';
-
+            
             Object.keys(client).forEach(key => {
                 const element = document.getElementById(key);
                 if (element) {
                     element.value = client[key] || '';
                 }
             });
-
+            
             document.getElementById('clientModal').style.display = 'block';
         }
 
@@ -1436,7 +1436,7 @@
 
             // Determine the base object (for defaults and existing data)
             const baseClient = editingIndex >= 0 ? clients[editingIndex] : {};
-
+            
             // --- Data Collection (Using Safe Access) ---
             const clientData = {
                 // Core fields, read directly from form
@@ -1449,7 +1449,7 @@
                 member: getFormValue('member'),
                 turnover: parseFloat(getFormValue('turnover') || 0) || 0,
                 papilioId: getFormValue('papilioId'),
-
+                
                 // Status fields
                 gstr9Status: getFormValue('gstr9Status') || 'Pending',
                 gstr9cStatus: getFormValue('gstr9cStatus') || 'Pending',
@@ -1487,7 +1487,7 @@
         function renderClientsTable() {
             const thead = document.querySelector('#clientsTable thead tr');
             const tbody = document.getElementById('clientsTableBody');
-
+            
             // Update table headers based on visible columns
             const headers = [
                 { key: 'sr', label: 'Sr' },
@@ -1514,15 +1514,15 @@
             ];
 
             thead.innerHTML = headers.filter(h => visibleColumns[h.key]).map(h => `<th>${h.label}</th>`).join('');
-
+            
             // Update table body
             tbody.innerHTML = '';
 
             clients.forEach((client, index) => {
                 const row = document.createElement('tr');
-
+                
                 const cells = [];
-
+                
                 if (visibleColumns.sr) cells.push(`<td>${client.sr || index + 1}</td>`);
                 if (visibleColumns.clientName) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'clientName', ${index})">${client.clientName || ''}</td>`);
                 if (visibleColumns.gstin) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'gstin', ${index})">${client.gstin || ''}</td>`);
@@ -1542,7 +1542,7 @@
                 if (visibleColumns.papilioUpdate) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'papilioUpdate', ${index})">${client.papilioUpdate || 'Pending'}</td>`);
                 if (visibleColumns.remarks) cells.push(`<td class="editable-cell" onclick="makeEditable(this, 'remarks', ${index})" title="${client.remarks || ''}">${truncateText(client.remarks || '', 15)}</td>`);
                 if (visibleColumns.actions) cells.push(`<td><button class="edit-btn" onclick="editClient(${index})">Edit</button><button class="delete-btn" onclick="deleteClient(${index})">Delete</button></td>`);
-
+                                
                 row.innerHTML = cells.join('');
                 tbody.appendChild(row);
             });
@@ -1585,7 +1585,7 @@
                 const currentValue = select.value;
 
                 select.innerHTML = '<option value="">All Seniors</option>';
-
+                
                 masterData.seniors.forEach(senior => {
                     const option = document.createElement('option');
                     option.value = senior;
@@ -1606,7 +1606,7 @@
                 const currentValue = select.value;
 
                 select.innerHTML = '<option value="">All Members</option>';
-
+                
                 masterData.members.forEach(member => {
                     const option = document.createElement('option');
                     option.value = member;
@@ -1699,7 +1699,7 @@
 
             if (!name) return;
 
-            fetch('/api/add_senior', {
+            fetch('/tracker/add_senior', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name })
@@ -1725,7 +1725,7 @@
 
             if (!name) return;
 
-            fetch('/api/add_member', {
+            fetch('/tracker/add_member', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name })
@@ -1735,7 +1735,7 @@
                 masterData.members = data.members;
                 loadMembersList();
                 populateFilters();
-
+                
                 input.value = '';
                 showSyncStatus('Member added');
             });
@@ -1748,7 +1748,7 @@
             const status = input.value.trim();
             if (!status) return;
 
-            const res = await fetch('/api/add_proposal_status', {
+            const res = await fetch('/tracker/add_proposal_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
@@ -1771,7 +1771,7 @@
             const status = input.value.trim();
             if (!status) return;
 
-            const res = await fetch('/api/add_gstr9_status', {
+            const res = await fetch('/tracker/add_gstr9_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
@@ -1794,7 +1794,7 @@
             const status = input.value.trim();
             if (!status) return;
 
-            const res = await fetch('/api/add_gstr9c_status', {
+            const res = await fetch('/tracker/add_gstr9c_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
@@ -1815,10 +1815,10 @@
         function addCustomColumn() {
             const input = document.getElementById('newColumnName');
             const column = input.value.trim();
-
+            
             if (!column) return;
 
-            fetch('/api/add_custom_column', { // <--- NEW API ENDPOINT
+            fetch('/tracker/add_custom_column', { // <--- NEW API ENDPOINT
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name: column }) // Use 'name' key matching Python
@@ -1844,7 +1844,7 @@
 
         // Remove functions for master data
         function removeSeniorName(name) {
-            fetch('/api/remove_senior', {
+            fetch('/tracker/remove_senior', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name })
@@ -1859,7 +1859,7 @@
         }
 
         function removeMemberName(name) {
-            fetch('/api/remove_member', {
+            fetch('/tracker/remove_member', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name })
@@ -1876,7 +1876,7 @@
 // ---------------------- REMOVE STATUS FUNCTIONS ----------------------
 
         async function removeProposalStatus(status) {
-            const res = await fetch('/api/remove_proposal_status', {
+            const res = await fetch('/tracker/remove_proposal_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
@@ -1894,7 +1894,7 @@
         }
 
         async function removeGstr9Status(status) {
-            const res = await fetch('/api/remove_gstr9_status', {
+            const res = await fetch('/tracker/remove_gstr9_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
@@ -1912,7 +1912,7 @@
         }
 
         async function removeGstr9cStatus(status) {
-            const res = await fetch('/api/remove_gstr9c_status', {
+            const res = await fetch('/tracker/remove_gstr9c_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
@@ -1934,7 +1934,7 @@
                 return;
             }
 
-            fetch('/api/remove_custom_column', { // <--- NEW API ENDPOINT
+            fetch('/tracker/remove_custom_column', { // <--- NEW API ENDPOINT
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name: column }) // Use 'name' key matching Python
@@ -1945,7 +1945,7 @@
                     alert(data.error);
                     return;
                 }
-
+                
                 masterData.customColumns = data.customColumns; // Update local state
                 loadCustomColumnsList(); // Refresh list display
                 // Note: saveMasterData is no longer strictly needed here since API handles persistence.
@@ -1961,7 +1961,7 @@
         function showColumnManager() {
             const modal = document.getElementById('columnManagerModal');
             const container = document.getElementById('columnCheckboxes');
-
+            
             const columns = [
                 { key: 'sr', label: 'Sr' },
                 { key: 'clientName', label: 'Client Name' },
@@ -1985,15 +1985,15 @@
                 { key: 'remarks', label: 'Remarks' },
                 { key: 'actions', label: 'Actions' }
             ];
-
+            
             container.innerHTML = columns.map(column => `
                 <label style="display: flex; align-items: center; gap: 8px; padding: 8px; background: #f8f9fa; border-radius: 4px;">
-                    <input type="checkbox" ${visibleColumns[column.key] ? 'checked' : ''}
+                    <input type="checkbox" ${visibleColumns[column.key] ? 'checked' : ''} 
                            onchange="toggleColumn('${column.key}', this.checked)">
                     <span>${column.label}</span>
                 </label>
             `).join('');
-
+            
             modal.style.display = 'block';
         }
 
@@ -2032,26 +2032,26 @@
 
         function updateSeniorDashboard() {
             const seniorData = {};
-
+            
             clients.forEach(client => {
                 const senior = client.senior || 'Unassigned';
                 if (!seniorData[senior]) {
-                    seniorData[senior] = {
-                        total: 0,
-                        gstr9Filed: 0,
+                    seniorData[senior] = { 
+                        total: 0, 
+                        gstr9Filed: 0, 
                         gstr9Pending: 0,
-                        gstr9cFiled: 0,
-                        gstr9cPending: 0
+                        gstr9cFiled: 0, 
+                        gstr9cPending: 0 
                     };
                 }
                 seniorData[senior].total++;
-
+                
                 if (client.gstr9Status === 'Filed') {
                     seniorData[senior].gstr9Filed++;
                 } else {
                     seniorData[senior].gstr9Pending++;
                 }
-
+                
                 if (client.gstr9cStatus === 'Filed') {
                     seniorData[senior].gstr9cFiled++;
                 } else {
@@ -2061,9 +2061,9 @@
 
             const tbody = document.getElementById('seniorDashboardBody');
             tbody.innerHTML = Object.entries(seniorData).map(([senior, stats]) => {
-                const completionRate = stats.total > 0 ?
+                const completionRate = stats.total > 0 ? 
                     (((stats.gstr9Filed + stats.gstr9cFiled) / (stats.total * 2)) * 100).toFixed(1) : 0;
-
+                
                 return `
                     <tr style="cursor: pointer;" onclick="filterBySenior('${senior}')">
                         <td style="font-weight: bold;">${senior}</td>
@@ -2080,27 +2080,27 @@
 
         function updateMemberDashboard() {
             const memberData = {};
-
+            
             clients.forEach(client => {
                 const member = client.member || 'Unassigned';
                 if (!memberData[member]) {
-                    memberData[member] = {
-                        total: 0,
+                    memberData[member] = { 
+                        total: 0, 
                         senior: client.senior,
-                        gstr9Filed: 0,
+                        gstr9Filed: 0, 
                         gstr9Pending: 0,
-                        gstr9cFiled: 0,
-                        gstr9cPending: 0
+                        gstr9cFiled: 0, 
+                        gstr9cPending: 0 
                     };
                 }
                 memberData[member].total++;
-
+                
                 if (client.gstr9Status === 'Filed') {
                     memberData[member].gstr9Filed++;
                 } else {
                     memberData[member].gstr9Pending++;
                 }
-
+                
                 if (client.gstr9cStatus === 'Filed') {
                     memberData[member].gstr9cFiled++;
                 } else {
@@ -2110,9 +2110,9 @@
 
             const tbody = document.getElementById('memberDashboardBody');
             tbody.innerHTML = Object.entries(memberData).map(([member, stats]) => {
-                const completionRate = stats.total > 0 ?
+                const completionRate = stats.total > 0 ? 
                     (((stats.gstr9Filed + stats.gstr9cFiled) / (stats.total * 2)) * 100).toFixed(1) : 0;
-
+                
                 return `
                     <tr style="cursor: pointer;" onclick="filterByMember('${member}')">
                         <td style="font-weight: bold;">${member}</td>
@@ -2132,7 +2132,7 @@
             showTab('tracker');
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
             document.querySelector('.nav-tab:nth-child(2)').classList.add('active');
-
+            
             clearFilters();
             document.getElementById('seniorFilter').value = senior === 'Unassigned' ? '' : senior;
             applyFilters();
@@ -2142,7 +2142,7 @@
             showTab('tracker');
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
             document.querySelector('.nav-tab:nth-child(2)').classList.add('active');
-
+            
             clearFilters();
             document.getElementById('memberFilter').value = member === 'Unassigned' ? '' : member;
             applyFilters();
@@ -2153,9 +2153,9 @@ function generateReport() {
     const reportType = document.getElementById('reportType').value;
     const seniorFilter = document.getElementById('reportSenior').value;
     const memberFilter = document.getElementById('reportMember').value;
-
+    
     // console.log(`[DEBUG:GENERATE] Filters: Type=${reportType}, Senior=${seniorFilter}, Member=${memberFilter}`);
-
+    
     let filteredClients = clients;
     if (seniorFilter !== 'all' && seniorFilter !== '') {
         filteredClients = filteredClients.filter(c => c.senior === seniorFilter);
@@ -2165,7 +2165,7 @@ function generateReport() {
     }
 
     const reportOutput = document.getElementById('reportOutput');
-
+    
     switch (reportType) {
         case 'status':
             generateStatusReport(filteredClients, reportOutput);
@@ -2194,7 +2194,7 @@ function generateReport() {
         function generateSeniorReport(data, container) {
             const seniorData = {};
             let grandTotal = { total: 0, gstr9Filed: 0, gstr9cFiled: 0, turnover: 0 };
-
+            
             data.forEach(client => {
                 const senior = client.senior || 'Unassigned';
                 if (!seniorData[senior]) {
@@ -2207,15 +2207,15 @@ function generateReport() {
                         totalTurnover: 0
                     };
                 }
-
+                
                 seniorData[senior].total++;
                 seniorData[senior].totalTurnover += client.turnover || 0;
-
+                
                 if (client.gstr9Status === 'Filed') seniorData[senior].gstr9Filed++;
                 if (client.gstr9cStatus === 'Filed') seniorData[senior].gstr9cFiled++;
                 if (client.gstr9Status === 'In Progress') seniorData[senior].gstr9InProgress++;
                 if (client.gstr9cStatus === 'In Progress') seniorData[senior].gstr9cInProgress++;
-
+                
                 // Grand totals
                 grandTotal.total++;
                 grandTotal.turnover += client.turnover || 0;
@@ -2242,9 +2242,9 @@ function generateReport() {
                             </thead>
                             <tbody>
                                 ${Object.entries(seniorData).map(([senior, stats]) => {
-                                    const completionRate = stats.total > 0 ?
+                                    const completionRate = stats.total > 0 ? 
                                         (((stats.gstr9Filed + stats.gstr9cFiled) / (stats.total * 2)) * 100).toFixed(1) : 0;
-
+                                    
                                     return `
                                         <tr>
                                             <td style="font-weight: bold;">${senior}</td>
@@ -2278,7 +2278,7 @@ function generateReport() {
         function generateMemberReport(data, container) {
             const memberData = {};
             let grandTotal = { total: 0, gstr9Filed: 0, gstr9cFiled: 0, turnover: 0 };
-
+            
             data.forEach(client => {
                 const member = client.member || 'Unassigned';
                 if (!memberData[member]) {
@@ -2292,15 +2292,15 @@ function generateReport() {
                         senior: client.senior
                     };
                 }
-
+                
                 memberData[member].total++;
                 memberData[member].totalTurnover += client.turnover || 0;
-
+                
                 if (client.gstr9Status === 'Filed') memberData[member].gstr9Filed++;
                 if (client.gstr9cStatus === 'Filed') memberData[member].gstr9cFiled++;
                 if (client.gstr9Status === 'In Progress') memberData[member].gstr9InProgress++;
                 if (client.gstr9cStatus === 'In Progress') memberData[member].gstr9cInProgress++;
-
+                
                 // Grand totals
                 grandTotal.total++;
                 grandTotal.turnover += client.turnover || 0;
@@ -2328,9 +2328,9 @@ function generateReport() {
                             </thead>
                             <tbody>
                                 ${Object.entries(memberData).map(([member, stats]) => {
-                                    const completionRate = stats.total > 0 ?
+                                    const completionRate = stats.total > 0 ? 
                                         (((stats.gstr9Filed + stats.gstr9cFiled) / (stats.total * 2)) * 100).toFixed(1) : 0;
-
+                                    
                                     return `
                                         <tr>
                                             <td style="font-weight: bold;">${member}</td>
@@ -2368,14 +2368,14 @@ function generateStatusReport(data, container) {
     const gstr9Pending = data.filter(c => c.gstr9Status === 'Pending' || c.gstr9Status === 'In Progress').length;
     const gstr9cFiled = data.filter(c => c.gstr9cStatus === 'Filed').length;
     const gstr9cPending = data.filter(c => c.gstr9cStatus === 'Pending' || c.gstr9cStatus === 'In Progress').length;
-
+    
     const overallCompletionRate = data.length > 0 ? (((gstr9Filed + gstr9cFiled) / (data.length * 2)) * 100).toFixed(1) : 0;
 
     // FIX 1: We must output a table structure for consistent export, even if it's just summary data.
     container.innerHTML = `
         <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
             <h4>GSTR Status Summary (${data.length} clients)</h4>
-
+            
             <div class="stats-grid" style="margin-top: 20px;">
                 <div class="stat-card">
                     <div class="stat-number">${gstr9Filed}</div>
@@ -2394,7 +2394,7 @@ function generateStatusReport(data, container) {
                     <div class="stat-label">GSTR-9C Pending</div>
                 </div>
             </div>
-
+            
             <div style="margin-top: 20px;">
                 <p style="font-weight: bold; color: #495057;">Overall Completion Rate: ${overallCompletionRate}%</p>
             </div>
@@ -2431,7 +2431,7 @@ function generateTurnoverReport(data, container) {
     const withTurnover = data.filter(c => (c.turnover || 0) > 0);
     const avgTurnover = withTurnover.length > 0 ? totalTurnover / withTurnover.length : 0;
     const topClients = withTurnover.sort((a, b) => (b.turnover || 0) - (a.turnover || 0)).slice(0, 10);
-
+    
     container.innerHTML = `
         <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
             <h4>Turnover Analysis (${data.length} clients)</h4>
@@ -2478,7 +2478,7 @@ function generateTurnoverReport(data, container) {
     `;
 }
         function generatePendingReport(data, container) {
-            const pending = data.filter(c =>
+            const pending = data.filter(c => 
                 c.gstr9Status === 'Pending' || c.gstr9Status === 'In Progress' ||
                 c.gstr9cStatus === 'Pending' || c.gstr9cStatus === 'In Progress'
             );
@@ -2564,39 +2564,39 @@ function generateTurnoverReport(data, container) {
         }
 
         function exportFilteredData() {
-            const visibleRows = Array.from(document.querySelectorAll('#clientsTableBody tr')).filter(row =>
+            const visibleRows = Array.from(document.querySelectorAll('#clientsTableBody tr')).filter(row => 
                 row.style.display !== 'none'
             );
-
+            
             const filteredClients = visibleRows.map(row => {
                 const index = parseInt(row.querySelector('td').textContent) - 1;
                 return clients[index];
             }).filter(client => client);
-
+            
             exportToExcel(filteredClients, 'GST_Annual_Returns_Filtered');
         }
 
 function exportReport() {
     // 1. FIX: Call generateReport() to ensure the HTML table is generated
-    generateReport();
-
+    generateReport(); 
+    
     const reportType = document.getElementById('reportType').value;
     const reportOutput = document.getElementById('reportOutput');
-
+    
     // console.log('[DEBUG:EXPORT] Searching for table in reportOutput...');
     const table = reportOutput.querySelector('table');
-
+    
     if (!table || table.querySelector('tbody').children.length === 0 && reportType !== 'status') {
         // console.error('EXPORT ERROR: Table element not found or tbody is empty.');
         alert('Error: Could not find report data table for export. The generated report might be empty.');
         return;
     }
-
+    
     // 2. Extract table data from the report
     const data = [];
     const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
     data.push(headers);
-
+    
     table.querySelectorAll('tbody tr').forEach(row => {
         const rowData = Array.from(row.querySelectorAll('td')).map(td => {
              // Clean up styled text (like currency symbols or nested spans) before export
@@ -2605,18 +2605,18 @@ function exportReport() {
         });
         data.push(rowData);
     });
-
+    
     // console.log(`[DEBUG:EXPORT] Extracted ${data.length} rows for export.`);
-
+    
     // 3. Export
     exportArrayToExcel(data, `${reportType}_report`);
 }
         function exportToExcel(data, filename) {
-            const headers = ['Sr', 'Client Name', 'GSTIN', 'Client Type', 'Senior', 'Multi Registration', 'Member',
-                           'Turnover', 'Papilio ID', 'GSTR-9 Status', 'GSTR-9C Status', 'Proposal Status',
-                           'Target Date', 'GSTR-9 ARN', 'GSTR-9 Date', 'GSTR-9C ARN', 'GSTR-9C Date',
+            const headers = ['Sr', 'Client Name', 'GSTIN', 'Client Type', 'Senior', 'Multi Registration', 'Member', 
+                           'Turnover', 'Papilio ID', 'GSTR-9 Status', 'GSTR-9C Status', 'Proposal Status', 
+                           'Target Date', 'GSTR-9 ARN', 'GSTR-9 Date', 'GSTR-9C ARN', 'GSTR-9C Date', 
                            'Completion mail Sent', 'Update of Papilio Service', 'Remarks'];
-
+            
             const csvContent = [
                 headers.join(','),
                 ...data.map((client, index) => [
@@ -2647,10 +2647,10 @@ function exportReport() {
         }
 
         function exportArrayToExcel(data, filename) {
-            const csvContent = data.map(row =>
+            const csvContent = data.map(row => 
                 row.map(cell => `"${cell}"`).join(',')
             ).join('\n');
-
+            
             downloadCSV(csvContent, filename);
         }
 
@@ -2671,11 +2671,11 @@ function exportReport() {
         function saveSettings() {
             const firmName = document.getElementById('settingsFirmName').value;
             document.getElementById('firmNameDisplay').textContent = firmName;
-
+            
             // Update auto-save interval
             clearInterval(autoSaveTimer);
             initAutoSave();
-
+            
             showSyncStatus('Settings updated');
         }
 
@@ -2708,7 +2708,7 @@ function exportReport() {
 
                 // console.log('🔥 SAVE DATA TRIGGERED - clients[0] keys:', Object.keys(clients[0] || {}));
                 // console.log('🔥 Missing fields?', ALL_CLIENT_HEADERS.filter(h => !clients[0]?.[h]));
-                const response = await fetch('/api/clients/save/', {
+                const response = await fetch('/tracker/clients/save/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2731,8 +2731,8 @@ function exportReport() {
                 // 1. Generate a unique timestamp (cache buster)
                 const cacheBuster = new Date().getTime();
                 // 2. Construct the URL with the cache buster parameter to force a fresh request
-                const url = `/api/clients/?_t=${cacheBuster}`;
-
+                const url = `/tracker/clients/?_t=${cacheBuster}`; 
+                
                 // 3. Use the cache-busting URL in the fetch request
                 const response = await fetch(url);
                 // --- END FIX ---
@@ -2740,7 +2740,7 @@ function exportReport() {
                 if (!response.ok) {
                     throw new Error('Failed to load clients');
                 }
-
+                
                 const data = await response.json();
                 const rows = data.clients || [];
 
@@ -2754,26 +2754,26 @@ function exportReport() {
                 gstin: (row['gstin'] || '').toUpperCase(),
                 clientType: row['clientType'] || '',
                 senior: row['senior'] || '',
-
+                
                 // Use the correct header 'multiRegistration'
-                multiRegistration: row['multiRegistration'] === 'Multiple' ? 'Yes' : 'No',
-
+                multiRegistration: row['multiRegistration'] === 'Multiple' ? 'Yes' : 'No', 
+                
                 member: row['member'] || '',
                 turnover: parseTurnover(row['turnover'] || ''),
                 papilioId: row['papilioId'] || '',
-
+                
                 // Status fields
                 gstr9Status: mapStatus(row['gstr9Status'] || ''),
                 gstr9cStatus: mapStatus(row['gstr9cStatus'] || ''),
                 proposalStatus: mapProposalStatus(row['proposalStatus'] || ''),
-
+                
                 // Date/ARN fields using the correct short headers
                 targetDate: row['targetDate'] || '',
                 gstr9Arn: row['gstr9Arn'] || '',
                 gstr9Date: row['gstr9Date'] || '',
                 gstr9cArn: row['gstr9cArn'] || '',
                 gstr9cDate: row['gstr9cDate'] || '',
-
+                
                 // Remaining fields
                 mailSent: row['mailSent'] || 'No',
                 papilioUpdate: row['papilioUpdate'] || 'Pending',
@@ -2786,7 +2786,7 @@ function exportReport() {
         }
         async function loadMasterDataFromApi() {
             try {
-                const response = await fetch('/api/master-data/');
+                const response = await fetch('/tracker/master-data/');
                 if (!response.ok) {
                     throw new Error('Failed to load master data');
                 }
@@ -2818,7 +2818,7 @@ function exportReport() {
 
         function parseTurnover(turnoverText) {
             if (!turnoverText || turnoverText.trim() === '' || turnoverText.trim() === '-') return 0;
-
+            
             // Remove spaces, commas and extract numbers
             const cleanedText = turnoverText.replace(/[\s,]/g, '');
             const number = parseFloat(cleanedText);
@@ -2827,15 +2827,15 @@ function exportReport() {
         // Add this helper function:
         function robustClean(text) {
             if (!text) return '';
-            // Use replace(/[^A-Za-z0-9\s]/g, '') to remove ALL non-alphanumeric/non-space characters,
+            // Use replace(/[^A-Za-z0-9\s]/g, '') to remove ALL non-alphanumeric/non-space characters, 
             // and then trim whitespace. This is a very safe method for expected status strings.
-            return String(text).trim().replace(/[^A-Za-z0-9\s]/g, '').trim();
+            return String(text).trim().replace(/[^A-Za-z0-9\s]/g, '').trim(); 
         }
 
         function mapStatus(status) {
     // 1. Use the robust cleaner immediately
-    const cleanedStatus = robustClean(status);
-
+    const cleanedStatus = robustClean(status); 
+    
     // 2. Check for empty string after cleaning
     if (cleanedStatus === '') return 'Pending';
 
@@ -2854,14 +2854,14 @@ function exportReport() {
         case 'SELECT':
             return 'Pending';
         default:
-            // If it's a known status like 'Filed' but wasn't handled in the switch,
+            // If it's a known status like 'Filed' but wasn't handled in the switch, 
             // return the cleaned version.
-            return cleanedStatus;
+            return cleanedStatus; 
     }
 }
         function mapProposalStatus(status) {
             if (!status || status === '') return 'Pending';
-
+            
             switch (status.toUpperCase()) {
                 case 'SELECT':
                     return 'Pending';
@@ -2924,7 +2924,7 @@ function exportReport() {
             }
 
             showSyncStatus('Reloading data...', 'saving');
-
+            
             try {
                 await loadMasterDataFromApi(); // Ensure master data is latest
                 await loadClientsFromApi();
@@ -2934,9 +2934,9 @@ function exportReport() {
                 renderClientsTable();
                 populateFilters();
                 loadMasterDataLists();
-
+                
                 showSyncStatus(`Successfully reloaded ${clients.length} client records.`);
-
+                
             } catch (error) {
                 console.error("Reload failed:", error);
                 showSyncStatus('Data Reload Failed!', 'error');
@@ -2954,21 +2954,21 @@ function exportReport() {
 
     async function uploadTrackerFile() {
         const fileInput = document.getElementById('trackerFileInput');
-
+        
         // 1. Validation (Checks if a file was selected)
         if (fileInput.files.length === 0) {
             // If the dialog was canceled, simply return.
-            return;
+            return; 
         }
-
+        
         const file = fileInput.files[0];
         const formData = new FormData();
         formData.append('file', file);
-
+        
         showSyncStatus('Uploading and processing data...', 'saving');
 
         try {
-            const response = await fetch('/api/upload_tracker/', {
+            const response = await fetch('/tracker/upload_tracker/', {
                 method: 'POST',
                 body: formData,
             });
@@ -2977,7 +2977,7 @@ function exportReport() {
 
             if (response.ok) {
                 // After successful upload, reload the clients table from the server
-                await loadClientsFromApi();
+                await loadClientsFromApi(); 
                 renderClientsTable();
                 updateDashboard();
                 populateFilters();
@@ -2988,9 +2988,9 @@ function exportReport() {
         } catch (e) {
             showSyncStatus('Network Error during upload.', 'error');
         } finally {
-            // CRITICAL: Reset the input field so the 'change' event fires again
+            // CRITICAL: Reset the input field so the 'change' event fires again 
             // if the user uploads the same file twice.
-            fileInput.value = '';
+            fileInput.value = ''; 
         }
     }
     // Function to handle clearing all data via the API endpoint
@@ -3003,7 +3003,7 @@ async function clearAllData() {
 
     try {
         // Send a POST request to the API endpoint defined to clear data (api_clear_clients)
-        const response = await fetch('/api/clear_clients/', {
+        const response = await fetch('/tracker/clear_clients/', {
             method: 'POST',
             headers: {
                 // Setting Content-Type is standard for POST requests
@@ -3023,7 +3023,7 @@ async function clearAllData() {
             renderClientsTable();
             updateDashboard();
             populateFilters();
-
+            
             showSyncStatus('✅ All client data has been permanently deleted.', 'success');
         } else {
             showSyncStatus(`Error clearing data: ${data.error || 'Unknown API error'}`, 'error');
