@@ -3024,7 +3024,7 @@ async function clearAllData() {
             updateDashboard();
             populateFilters();
             
-            showSyncStatus('✅ All client data has been permanently deleted.', 'success');
+            showSyncStatus('All client data has been permanently deleted.', 'success');
         } else {
             showSyncStatus(`Error clearing data: ${data.error || 'Unknown API error'}`, 'error');
             console.error('API Error:', data);

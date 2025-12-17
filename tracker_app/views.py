@@ -30,7 +30,7 @@ ALL_CLIENT_HEADERS = [
 
 def _read_clients_from_csv():
     """Read main client data from input_csv.csv and return list of dicts."""
-    csv_path = BASE_DIR / "input_csv.csv"
+    csv_path = BASE_DIR / "master_data/input_csv.csv"
     if not csv_path.exists():
         return []
 
@@ -41,7 +41,7 @@ def _read_clients_from_csv():
 
 def _write_clients_to_csv(clients):
     """Overwrite input_csv.csv with provided client dicts, ensuring all headers are present."""
-    csv_path = BASE_DIR / "input_csv.csv"
+    csv_path = BASE_DIR / "master_data/input_csv.csv"
     
     headers = ALL_CLIENT_HEADERS
 
@@ -171,14 +171,14 @@ def api_master_data(request):
     GET master/reference lists from CSVs.
     """
     data = {
-        "seniors": _read_single_column_csv("seniors.csv"),
-        "members": _read_single_column_csv("members.csv"),
+        "seniors": _read_single_column_csv("master_data/seniors.csv"),
+        "members": _read_single_column_csv("master_data/members.csv"),
         "proposalStatuses": _read_single_column_csv(
-            "proposal_status_master.csv"
+            "master_data/proposal_status_master.csv"
         ),
-        "gstr9Statuses": _read_single_column_csv("gstr_status_master.csv"),
-        "gstr9cStatuses": _read_single_column_csv("gstr_status_master.csv"),
-        "customColumns": _read_single_column_csv("custom_columns.csv"),
+        "gstr9Statuses": _read_single_column_csv("master_data/gstr_status_master.csv"),
+        "gstr9cStatuses": _read_single_column_csv("master_data/gstr_status_master.csv"),
+        "customColumns": _read_single_column_csv("master_data/custom_columns.csv"),
     }
     return JsonResponse(data)
 
@@ -202,24 +202,24 @@ def api_master_data_save(request):
 
 
     _write_single_column_csv(
-        "seniors.csv", "Senior", payload.get("seniors", [])
+        "master_data/seniors.csv", "Senior", payload.get("seniors", [])
     )
     _write_single_column_csv(
-        "members.csv", "Member", payload.get("members", [])
+        "master_data/members.csv", "Member", payload.get("members", [])
     )
     _write_single_column_csv(
-        "proposal_status_master.csv",
+        "master_data/proposal_status_master.csv",
         "Proposal Status",
         payload.get("proposalStatuses", []),
     )
     _write_single_column_csv(
-        "gstr_status_master.csv",
+        "master_data/gstr_status_master.csv",
         "GSTR Status",
         payload.get("gstr9Statuses", []),
     )
     
     _write_single_column_csv(
-        "custom_columns.csv",
+        "master_data/custom_columns.csv",
         "Custom Column",
         payload.get("customColumns", []),
     )
@@ -238,13 +238,13 @@ def api_add_senior(request):
         if not name:
             return JsonResponse({"error": "Name is required"}, status=400)
 
-        seniors = _read_single_column_csv("seniors.csv")
+        seniors = _read_single_column_csv("master_data/seniors.csv")
 
         if name in seniors:
             return JsonResponse({"error": "Senior already exists"}, status=400)
 
         seniors.append(name)
-        _write_single_column_csv("seniors.csv", "Senior", seniors)
+        _write_single_column_csv("master_data/seniors.csv", "Senior", seniors)
 
         return JsonResponse({"status": "ok", "seniors": seniors})
 
@@ -259,13 +259,13 @@ def api_remove_senior(request):
         body = json.loads(request.body.decode("utf-8"))
         name = body.get("name", "").strip()
 
-        seniors = _read_single_column_csv("seniors.csv")
+        seniors = _read_single_column_csv("master_data/seniors.csv")
 
         if name not in seniors:
             return JsonResponse({"error": "Senior not found"}, status=404)
 
         seniors.remove(name)
-        _write_single_column_csv("seniors.csv", "Senior", seniors)
+        _write_single_column_csv("master_data/seniors.csv", "Senior", seniors)
 
         return JsonResponse({"status": "ok", "seniors": seniors})
 
@@ -284,13 +284,13 @@ def api_add_member(request):
         if not name:
             return JsonResponse({"error": "Name is required"}, status=400)
 
-        members = _read_single_column_csv("members.csv")
+        members = _read_single_column_csv("master_data/members.csv")
 
         if name in members:
             return JsonResponse({"error": "Member already exists"}, status=400)
 
         members.append(name)
-        _write_single_column_csv("members.csv", "Member", members)
+        _write_single_column_csv("master_data/members.csv", "Member", members)
 
         return JsonResponse({"status": "ok", "members": members})
 
@@ -305,13 +305,13 @@ def api_remove_member(request):
         body = json.loads(request.body.decode("utf-8"))
         name = body.get("name", "").strip()
 
-        members = _read_single_column_csv("members.csv")
+        members = _read_single_column_csv("master_data/members.csv")
 
         if name not in members:
             return JsonResponse({"error": "Member not found"}, status=404)
 
         members.remove(name)
-        _write_single_column_csv("members.csv", "Member", members)
+        _write_single_column_csv("master_data/members.csv", "Member", members)
 
         return JsonResponse({"status": "ok", "members": members})
 
@@ -329,13 +329,13 @@ def api_add_proposal_status(request):
         if not status:
             return JsonResponse({"error": "No status given"}, status=400)
 
-        statuses = _read_single_column_csv("proposal_status.csv")
+        statuses = _read_single_column_csv("master_data/proposal_status.csv")
 
         if status in statuses:
             return JsonResponse({"error": "Status already exists"}, status=400)
 
         statuses.append(status)
-        _write_single_column_csv("proposal_status.csv", "proposalStatus", statuses)
+        _write_single_column_csv("master_data/proposal_status.csv", "proposalStatus", statuses)
 
         return JsonResponse({"proposalStatuses": statuses})
     except Exception as e:
@@ -349,10 +349,10 @@ def api_remove_proposal_status(request):
         body = json.loads(request.body.decode("utf-8"))
         status = body.get("status", "").strip()
 
-        statuses = _read_single_column_csv("proposal_status.csv")
+        statuses = _read_single_column_csv("master_data/proposal_status.csv")
         statuses = [s for s in statuses if s != status]
 
-        _write_single_column_csv("proposal_status.csv", "proposalStatus", statuses)
+        _write_single_column_csv("master_data/proposal_status.csv", "proposalStatus", statuses)
 
         return JsonResponse({"proposalStatuses": statuses})
     except Exception as e:
@@ -367,13 +367,13 @@ def api_add_gstr9_status(request):
         body = json.loads(request.body.decode("utf-8"))
         status = body.get("status", "").strip()
 
-        statuses = _read_single_column_csv("gstr9_status.csv")
+        statuses = _read_single_column_csv("master_data/gstr9_status.csv")
 
         if status in statuses:
             return JsonResponse({"error": "Status already exists"}, status=400)
 
         statuses.append(status)
-        _write_single_column_csv("gstr9_status.csv", "gstr9Status", statuses)
+        _write_single_column_csv("master_data/gstr9_status.csv", "gstr9Status", statuses)
 
         return JsonResponse({"gstr9Statuses": statuses})
     except Exception as e:
@@ -387,10 +387,10 @@ def api_remove_gstr9_status(request):
         body = json.loads(request.body.decode("utf-8"))
         status = body.get("status", "").strip()
 
-        statuses = _read_single_column_csv("gstr9_status.csv")
+        statuses = _read_single_column_csv("master_data/gstr9_status.csv")
         statuses = [s for s in statuses if s != status]
 
-        _write_single_column_csv("gstr9_status.csv", "gstr9Status", statuses)
+        _write_single_column_csv("master_data/gstr9_status.csv", "gstr9Status", statuses)
 
         return JsonResponse({"gstr9Statuses": statuses})
     except Exception as e:
@@ -405,13 +405,13 @@ def api_add_gstr9c_status(request):
         body = json.loads(request.body.decode("utf-8"))
         status = body.get("status", "").strip()
 
-        statuses = _read_single_column_csv("gstr9c_status.csv")
+        statuses = _read_single_column_csv("master_data/gstr9c_status.csv")
 
         if status in statuses:
             return JsonResponse({"error": "Status already exists"}, status=400)
 
         statuses.append(status)
-        _write_single_column_csv("gstr9c_status.csv", "gstr9cStatus", statuses)
+        _write_single_column_csv("master_data/gstr9c_status.csv", "gstr9cStatus", statuses)
 
         return JsonResponse({"gstr9cStatuses": statuses})
     except Exception as e:
@@ -425,10 +425,10 @@ def api_remove_gstr9c_status(request):
         body = json.loads(request.body.decode("utf-8"))
         status = body.get("status", "").strip()
 
-        statuses = _read_single_column_csv("gstr9c_status.csv")
+        statuses = _read_single_column_csv("master_data/gstr9c_status.csv")
         statuses = [s for s in statuses if s != status]
 
-        _write_single_column_csv("gstr9c_status.csv", "gstr9cStatus", statuses)
+        _write_single_column_csv("master_data/gstr9c_status.csv", "gstr9cStatus", statuses)
 
         return JsonResponse({"gstr9cStatuses": statuses})
     except Exception as e:
@@ -444,13 +444,13 @@ def api_add_custom_column(request):
         if not column_name:
             return JsonResponse({"error": "Column name is required"}, status=400)
 
-        columns = _read_single_column_csv("custom_columns.csv")
+        columns = _read_single_column_csv("master_data/custom_columns.csv")
 
         if column_name in columns:
             return JsonResponse({"error": "Custom column already exists"}, status=400)
 
         columns.append(column_name)
-        _write_single_column_csv("custom_columns.csv", "Custom Column", columns)
+        _write_single_column_csv("master_data/custom_columns.csv", "Custom Column", columns)
 
         return JsonResponse({"status": "ok", "customColumns": columns})
 
@@ -466,13 +466,13 @@ def api_remove_custom_column(request):
         body = json.loads(request.body.decode("utf-8"))
         column_name = body.get("name", "").strip()
 
-        columns = _read_single_column_csv("custom_columns.csv")
+        columns = _read_single_column_csv("master_data/custom_columns.csv")
 
         if column_name not in columns:
             return JsonResponse({"error": "Custom column not found"}, status=404)
 
         columns.remove(column_name)
-        _write_single_column_csv("custom_columns.csv", "Custom Column", columns)
+        _write_single_column_csv("master_data/custom_columns.csv", "Custom Column", columns)
 
         return JsonResponse({"status": "ok", "customColumns": columns})
 
